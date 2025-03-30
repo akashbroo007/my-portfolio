@@ -11,16 +11,45 @@ export default function ClientLayout({
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate any initial loading you might need
-    const timer = setTimeout(() => {
+    try {
+      // Check if we already showed the loading screen in this session
+      const hasLoadingBeenShown = sessionStorage.getItem('loading_shown');
+      
+      if (hasLoadingBeenShown === 'true') {
+        // Skip loading animation if already shown
+        setIsLoading(false);
+        return;
+      }
+      
+      // Set a maximum timeout to prevent infinite loading
+      const maxTimeout = setTimeout(() => {
+        setIsLoading(false);
+      }, 5000); // Fail-safe: force loading to end after 5 seconds
+      
+      // Normal loading timeout
+      const timer = setTimeout(() => {
+        setIsLoading(false);
+        // Mark loading as shown for this session
+        try {
+          sessionStorage.setItem('loading_shown', 'true');
+        } catch (e) {
+          console.error('Error setting sessionStorage:', e);
+        }
+      }, 3000);
+      
+      // Force dark mode
+      document.documentElement.classList.add('dark');
+      document.body.style.backgroundColor = '#000';
+      
+      return () => {
+        clearTimeout(timer);
+        clearTimeout(maxTimeout);
+      };
+    } catch (e) {
+      // If any error occurs, skip loading
+      console.error('Error in loading screen:', e);
       setIsLoading(false);
-    }, 3000); // Adjust this time as needed
-
-    // Force dark mode
-    document.documentElement.classList.add('dark');
-    document.body.style.backgroundColor = '#000';
-    
-    return () => clearTimeout(timer);
+    }
   }, []);
 
   return (
