@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 export function About() {
   return (
-    <section className="w-full py-20 bg-gray-900" id="about">
+    <section className="w-full py-20 bg-black" id="about">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div>
@@ -48,7 +48,7 @@ export function About() {
                 GitHub Profile
               </a>
               <a 
-                href="#contact" 
+                href="/contact" 
                 className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition"
               >
                 Contact Me
@@ -62,7 +62,7 @@ export function About() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="relative group overflow-hidden rounded-lg">
                 <Image 
-                  src="https://placehold.co/400x225/373737/FFFFFF/png?text=E-Commerce+Platform"
+                  src="/images/ecommerce-website.jpg"
                   alt="E-Commerce Platform"
                   width={400}
                   height={225}
@@ -75,7 +75,7 @@ export function About() {
               </div>
               <div className="relative group overflow-hidden rounded-lg">
                 <Image 
-                  src="https://placehold.co/400x225/373737/FFFFFF/png?text=Task+Management"
+                  src="/images/task-manager.png"
                   alt="Task Management App"
                   width={400}
                   height={225}
@@ -88,7 +88,7 @@ export function About() {
               </div>
               <div className="relative group overflow-hidden rounded-lg">
                 <Image 
-                  src="https://placehold.co/400x225/373737/FFFFFF/png?text=AI+Chat+Application"
+                  src="/images/chatbot-concept.jpg"
                   alt="AI Chat Application"
                   width={400}
                   height={225}
@@ -101,7 +101,7 @@ export function About() {
               </div>
               <div className="relative group overflow-hidden rounded-lg">
                 <Image 
-                  src="https://placehold.co/400x225/373737/FFFFFF/png?text=Portfolio+Website"
+                  src="/images/portfolio.jpg"
                   alt="Portfolio Website"
                   width={400}
                   height={225}

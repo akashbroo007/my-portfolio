@@ -1,99 +1,132 @@
 "use client"
 
-import { useState } from "react"
-import { Menu, X } from "lucide-react"
-import { Button } from "./ui/button"
 import Link from 'next/link'
-import KashLogo from './KashLogo'
+import { useEffect, useState } from 'react'
+import { motion } from 'framer-motion'
+import { Menu, X } from 'lucide-react'
+import { usePathname } from 'next/navigation'
 
 export function NavBar() {
   const [isOpen, setIsOpen] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
+  const pathname = usePathname()
 
   const navItems = [
-    { name: "Home", href: "/" },
-    { name: "Projects", href: "#projects" },
-    { name: "About", href: "#about" },
-    { name: "Contact", href: "#contact" },
+    { name: 'Home', path: '/' },
+    { name: 'About', path: '/about' },
+    { name: 'Projects', path: '/projects' },
+    { name: 'Contact', path: '/contact' }
   ]
 
-  const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    // Only prevent default for anchor links
-    if (href.startsWith('#')) {
-      e.preventDefault();
-      const element = document.querySelector(href);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
-      setIsOpen(false);
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10)
     }
-  };
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'unset'
+    }
+  }, [isOpen])
 
   return (
-    <nav className="fixed top-0 w-full bg-gray-900/80 backdrop-blur-sm z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <div className="flex-shrink-0">
-            <Link href="/" className="flex items-center space-x-3">
-              <div className="flex items-center relative group">
-                <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-purple-600/20 to-transparent p-1">
-                  <KashLogo className="w-12 h-12" />
-                  <div className="absolute inset-0 bg-gradient-to-tr from-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </div>
-                <div className="absolute -inset-2 bg-white/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur" />
-              </div>
-              <span className="text-white text-xl font-mono tracking-wide group-hover:text-purple-400 transition-colors duration-300">
-                KashVenture Inc.
-              </span>
+    <motion.nav
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ type: 'spring', stiffness: 120, damping: 20 }}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled ? 'bg-black/80 backdrop-blur-md shadow-md' : 'bg-transparent'
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="flex justify-between items-center py-4 md:justify-start md:space-x-10">
+          <div className="flex justify-start lg:w-0 lg:flex-1">
+            <Link href="/" className="text-2xl font-bold text-white">
+              Akash<span className="text-blue-500">.dev</span>
             </Link>
-          </div>
-          
-          {/* Desktop Menu */}
-          <div className="hidden md:block">
-            <div className="ml-10 flex items-center space-x-4">
-              {navItems.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors"
-                  onClick={(e) => scrollToSection(e, item.href)}
-                >
-                  {item.name}
-                </a>
-              ))}
-            </div>
           </div>
 
           {/* Mobile menu button */}
           <div className="md:hidden">
-            <Button
-              variant="ghost"
-              size="icon"
+            <button
+              type="button"
+              className="inline-flex items-center justify-center p-2 rounded-md text-gray-300 hover:text-white focus:outline-none"
+              aria-controls="mobile-menu"
+              aria-expanded="false"
               onClick={() => setIsOpen(!isOpen)}
-              className="text-gray-300 hover:text-white"
             >
+              <span className="sr-only">Open main menu</span>
               {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </Button>
+            </button>
+          </div>
+
+          {/* Desktop menu */}
+          <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
+            <div className="ml-10 flex items-baseline space-x-4">
+              {navItems.map((item) => (
+                <Link
+                  key={item.name}
+                  href={item.path}
+                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors hover:text-white ${
+                    pathname === item.path
+                      ? 'text-white bg-blue-500/20 hover:bg-blue-500/30'
+                      : 'text-gray-300 hover:bg-gray-800/50'
+                  }`}
+                >
+                  {item.name}
+                </Link>
+              ))}
+              <a
+                href="https://github.com/akashbroo007"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700"
+              >
+                GitHub
+              </a>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Mobile Navigation */}
-      {isOpen && (
-        <div className="md:hidden">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            {navItems.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                className="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-                onClick={(e) => scrollToSection(e, item.href)}
-              >
-                {item.name}
-              </a>
-            ))}
-          </div>
+      {/* Mobile menu, show/hide based on menu state */}
+      <motion.div
+        initial={false}
+        animate={{ height: isOpen ? 'auto' : 0, opacity: isOpen ? 1 : 0 }}
+        transition={{ duration: 0.3 }}
+        className="md:hidden overflow-hidden bg-gray-900"
+        style={{ overflow: 'hidden' }}
+      >
+        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+          {navItems.map((item) => (
+            <Link
+              key={item.name}
+              href={item.path}
+              className={`block px-3 py-2 rounded-md text-base font-medium ${
+                pathname === item.path
+                  ? 'text-white bg-blue-500/20'
+                  : 'text-gray-300 hover:bg-gray-800 hover:text-white'
+              }`}
+              onClick={() => setIsOpen(false)}
+            >
+              {item.name}
+            </Link>
+          ))}
+          <a
+            href="https://github.com/akashbroo007"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block px-3 py-2 rounded-md text-base font-medium text-white bg-blue-600 hover:bg-blue-700 mt-4"
+          >
+            GitHub
+          </a>
         </div>
-      )}
-    </nav>
+      </motion.div>
+    </motion.nav>
   )
 }

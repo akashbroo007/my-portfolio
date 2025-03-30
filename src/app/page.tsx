@@ -1,15 +1,10 @@
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { ArrowRight } from "lucide-react"
-import { Hero } from "@/components/sections/hero"
-import { About } from "@/components/sections/about"
-import { Skills } from "@/components/sections/skills"
-import { Projects } from "@/components/sections/projects"
-import { Experience } from "@/components/sections/experience"
-import { Contact } from "@/components/sections/contact"
-import { Footer } from "@/components/sections/footer"
+import { Footer } from '@/components/sections/footer'
 import { ProjectButton } from "@/components/project-button"
 import { TechStackItem } from "@/components/tech-stack-item"
+import Link from "next/link"
 
 export default function Home() {
   const techStack = [
@@ -71,13 +66,13 @@ export default function Home() {
   ]
 
   return (
-    <div className="flex flex-col min-h-screen overflow-hidden">
+    <div className="flex flex-col min-h-screen overflow-hidden bg-black">
       <main className="flex-grow relative">
         <div 
           className="relative w-full flex flex-col items-center justify-center px-4 py-8 pt-20"
           id="home"
           style={{
-            backgroundImage: "url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80')",
+            backgroundImage: "url('/images/background.jpg')",
             backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
@@ -114,8 +109,16 @@ export default function Home() {
               I started this journey out of pure passion and have been exploring the world of web development
               ever since. I love creating full-stack applications that enhance user experience and solve real-world problems.
             </p>
-            <div className="flex justify-center mt-6">
+            <div className="flex justify-center mt-6 space-x-4">
               <ProjectButton />
+              <Link href="/about">
+                <Button 
+                  variant="outline" 
+                  className="flex items-center mt-8"
+                >
+                  Learn About Me <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
             </div>
           </section>
 
@@ -137,13 +140,6 @@ export default function Home() {
             </div>
           </section>
         </div>
-
-        {/* Additional Sections */}
-        <About />
-        <Skills />
-        <Projects />
-        <Experience />
-        <Contact />
       </main>
       
       <Footer />
