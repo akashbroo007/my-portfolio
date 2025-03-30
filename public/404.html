@@ -4,42 +4,19 @@
   <meta charset="utf-8">
   <title>Redirecting...</title>
   <script>
-    // GitHub Pages SPA Redirect
+    // Simple GitHub Pages redirect
     (function() {
-      // Single Page Apps for GitHub Pages
-      // MIT License - https://github.com/rafgraph/spa-github-pages
-      
-      // This script checks to see if a redirect is present in the query string,
-      // converts it back into the correct url and adds it to the
-      // browser's history using window.history.replaceState(...),
-      // which won't cause the browser to attempt to load the new url.
-      // When the single page app is loaded further down in this file,
-      // the correct url will be waiting in the browser's history for
-      // the single page app to route accordingly.
-      
-      var pathSegmentsToKeep = 1; // Keep /my-portfolio
-      var l = window.location;
-      
-      // Redirect to the index.html with path in URL parameters
-      if (l.search) {
-        // If URL already has a query, just reload the page
-        window.location.reload();
-      } else {
-        var route = l.pathname.split('/').slice(pathSegmentsToKeep).join('/');
-        l.replace(
-          l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-          l.pathname.split('/').slice(0, pathSegmentsToKeep).join('/') + '/?route=' +
-          encodeURIComponent(route) + l.search
-        );
-      }
-    }());
+      // Go directly to the home page 
+      const githubPagesBase = '/my-portfolio';
+      window.location.href = githubPagesBase + '/';
+    })();
   </script>
+  <!-- Fallback meta redirect -->
+  <meta http-equiv="refresh" content="0;URL='/my-portfolio/'" />
 </head>
-<body>
-  <h1 style="text-align: center; color: white; font-family: Arial, sans-serif; margin-top: 50px;">Redirecting...</h1>
-  <p style="text-align: center; color: #aaa; font-family: Arial, sans-serif;">
-    If you are not automatically redirected, 
-    <a style="color: #4299e1;" href="/my-portfolio/">click here</a>
-  </p>
+<body style="background-color: black; color: white; font-family: Arial, sans-serif; text-align: center; padding-top: 50px;">
+  <h1>Page Not Found</h1>
+  <p>Redirecting to home page...</p>
+  <p>If you are not redirected automatically, <a href="/my-portfolio/" style="color: #4299e1;">click here</a>.</p>
 </body>
 </html> 

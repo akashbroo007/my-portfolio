@@ -4,6 +4,7 @@ const nextConfig = {
   basePath: process.env.NODE_ENV === 'production' ? '/my-portfolio' : '',
   assetPrefix: process.env.NODE_ENV === 'production' ? '/my-portfolio/' : '',
   trailingSlash: true,
+  distDir: 'out',
   images: {
     domains: [
       'cdn.jsdelivr.net',
@@ -24,6 +25,11 @@ const nextConfig = {
   reactStrictMode: false,
   experimental: {
     forceSwcTransforms: true,
+  },
+  // Disable automatic prefetching which can cause issues in GitHub Pages
+  onDemandEntries: {
+    maxInactiveAge: 25 * 1000,
+    pagesBufferLength: 2,
   }
 }
 

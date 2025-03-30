@@ -21,34 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <head>
-        <script dangerouslySetInnerHTML={{
-          __html: `
-            // GitHub Pages SPA Router
-            (function() {
-              try {
-                // Handle route from 404.html redirect
-                const search = window.location.search;
-                const routeParam = new URLSearchParams(search).get('route');
-
-                if (routeParam) {
-                  // Get the base path
-                  const isGitHubPages = window.location.hostname.includes('github.io');
-                  const basePath = isGitHubPages ? '/my-portfolio' : '';
-                  
-                  // Build the proper path
-                  const path = basePath + '/' + routeParam.replace(/^\\/+/, '');
-                  
-                  console.log('Redirecting from route param to:', path);
-                  
-                  // Replace the current URL with the correct route
-                  window.history.replaceState(null, null, path);
-                }
-              } catch (e) {
-                console.error('Error in SPA router:', e);
-              }
-            })();
-          `
-        }} />
+        {/* Simplified to avoid issues */}
       </head>
       <body className="bg-black text-white">
         <ClientLayout>
