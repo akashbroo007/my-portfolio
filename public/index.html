@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Akash Prabhakaran - Portfolio</title>
+  <script>
+    // Redirect to Next.js build output
+    (function() {
+      // Check if we're on GitHub Pages
+      const isGitHubPages = window.location.hostname.includes('github.io');
+      
+      if (isGitHubPages) {
+        // Preserve any query parameters
+        const queryString = window.location.search || '';
+        
+        // Redirect to the actual index.html in the out directory
+        window.location.replace('/my-portfolio' + queryString);
+      }
+    })();
+  </script>
+  <!-- Fallback meta redirect -->
+  <meta http-equiv="refresh" content="0;URL='/my-portfolio/'" />
+</head>
+<body style="background-color: black; color: white; font-family: Arial, sans-serif;">
+  <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; text-align: center;">
+    <h1>Redirecting to Portfolio...</h1>
+    <p>If you are not redirected automatically, <a href="/my-portfolio/" style="color: #4299e1;">click here</a>.</p>
+  </div>
+</body>
+</html> 

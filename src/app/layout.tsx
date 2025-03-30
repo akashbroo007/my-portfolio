@@ -23,39 +23,28 @@ export default function RootLayout({
       <head>
         <script dangerouslySetInnerHTML={{
           __html: `
-            // SPA GitHub Pages router with error handling
+            // GitHub Pages SPA Router
             (function() {
               try {
-                // Check if we have a saved path from 404.html redirect
-                const redirectPath = sessionStorage.getItem('redirect_path');
-                
-                if (redirectPath) {
-                  console.log('Found redirect path in sessionStorage:', redirectPath);
-                  
-                  // Clear the redirect path from sessionStorage
-                  sessionStorage.removeItem('redirect_path');
-                  
-                  // Detect environment
+                // Handle route from 404.html redirect
+                const search = window.location.search;
+                const routeParam = new URLSearchParams(search).get('route');
+
+                if (routeParam) {
+                  // Get the base path
                   const isGitHubPages = window.location.hostname.includes('github.io');
-                  const isIPAddress = /^\\d+\\.\\d+\\.\\d+\\.\\d+$/.test(window.location.hostname);
+                  const basePath = isGitHubPages ? '/my-portfolio' : '';
                   
-                  // Get appropriate base path
-                  let basePath = '';
-                  if (isGitHubPages) {
-                    basePath = '/my-portfolio';
-                  }
+                  // Build the proper path
+                  const path = basePath + '/' + routeParam.replace(/^\\/+/, '');
                   
-                  // If we're on an IP address (e.g., 172.20.10.2), keep the base path empty
+                  console.log('Redirecting from route param to:', path);
                   
-                  // Navigate to the correct route
-                  const targetPath = basePath + redirectPath;
-                  console.log('Redirecting to:', targetPath);
-                  
-                  // Update history to not break the back button
-                  window.history.replaceState(null, null, targetPath);
+                  // Replace the current URL with the correct route
+                  window.history.replaceState(null, null, path);
                 }
-              } catch (error) {
-                console.error('Error in SPA router script:', error);
+              } catch (e) {
+                console.error('Error in SPA router:', e);
               }
             })();
           `

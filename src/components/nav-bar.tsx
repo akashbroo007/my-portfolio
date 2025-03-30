@@ -14,9 +14,9 @@ export function NavBar() {
 
   const navItems = [
     { name: 'Home', path: '/' },
-    { name: 'About', path: '/about' },
-    { name: 'Projects', path: '/projects' },
-    { name: 'Contact', path: '/contact' }
+    { name: 'About', path: '/about/' },
+    { name: 'Projects', path: '/projects/' },
+    { name: 'Contact', path: '/contact/' }
   ]
 
   useEffect(() => {
