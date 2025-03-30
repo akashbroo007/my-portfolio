@@ -90,7 +90,7 @@ export function About() {
                     alt="E-Commerce Platform"
                     width={400}
                     height={225}
-                    className="w-full aspect-video object-cover transform transition-transform duration-300 group-hover:scale-110"
+                    className="w-full aspect-video object-cover object-center transform transition-transform duration-300 group-hover:scale-110"
                     unoptimized
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
@@ -105,7 +105,7 @@ export function About() {
                     alt="Task Management App"
                     width={400}
                     height={225}
-                    className="w-full aspect-video object-cover transform transition-transform duration-300 group-hover:scale-110"
+                    className="w-full aspect-video object-cover object-center transform transition-transform duration-300 group-hover:scale-110"
                     unoptimized
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
@@ -120,7 +120,7 @@ export function About() {
                     alt="AI Chat Application"
                     width={400}
                     height={225}
-                    className="w-full aspect-video object-cover transform transition-transform duration-300 group-hover:scale-110"
+                    className="w-full aspect-video object-cover object-center transform transition-transform duration-300 group-hover:scale-110"
                     unoptimized
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
@@ -135,7 +135,7 @@ export function About() {
                     alt="Portfolio Website"
                     width={400}
                     height={225}
-                    className="w-full aspect-video object-cover transform transition-transform duration-300 group-hover:scale-110"
+                    className="w-full aspect-video object-cover object-center transform transition-transform duration-300 group-hover:scale-110"
                     unoptimized
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">

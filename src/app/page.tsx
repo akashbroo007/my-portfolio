@@ -139,7 +139,7 @@ export default function Home() {
         style={{
           backgroundImage: `url('${process.env.NODE_ENV === 'production' ? '/my-portfolio/images/background.jpg' : '/images/background.jpg'}')`,
           backgroundSize: "cover",
-          backgroundPosition: "center",
+          backgroundPosition: "center center",
           backgroundRepeat: "no-repeat",
           backgroundAttachment: "fixed"
         }}
@@ -150,8 +150,8 @@ export default function Home() {
         {/* Header Section */}
         <header className="text-center mb-12 relative z-10 pt-12 text-white">
           <ScrollReveal direction="down" delay={0.2}>
-            <Avatar className="mx-auto mb-4 w-24 h-24">
-              <AvatarImage src="https://avatars.githubusercontent.com/u/143693850?s=400&u=3aa6b0677bbb4531794ad9724a0e0b5dc7e3236e&v=4" alt="Akash Prabhakaran" />
+            <Avatar className="mx-auto mb-4 w-32 h-32 ring-4 ring-blue-500/30 ring-offset-4 ring-offset-black">
+              <AvatarImage src="https://avatars.githubusercontent.com/u/143693850?s=400&u=3aa6b0677bbb4531794ad9724a0e0b5dc7e3236e&v=4" alt="Akash Prabhakaran" className="object-center" />
               <AvatarFallback>AP</AvatarFallback>
             </Avatar>
           </ScrollReveal>
@@ -240,7 +240,7 @@ export default function Home() {
                     <div className="relative aspect-video overflow-hidden">
                       <div 
                         className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
-                        style={{ backgroundImage: `url(${project.image})` }}
+                        style={{ backgroundImage: `url(${project.image})`, objectPosition: 'center' }}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-0 group-hover:opacity-70 transition-opacity duration-300" />
                     </div>
