@@ -47,6 +47,9 @@ export default function About() {
                 Next.js, and Node.js. My approach combines technical expertise with creative problem-solving 
                 to deliver exceptional user experiences.
               </p>
+              <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+                I&apos;m passionate about creating innovative solutions.
+              </p>
             </motion.div>
 
             <motion.div

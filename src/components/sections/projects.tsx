@@ -32,20 +32,19 @@ export function Projects() {
   ]
 
   return (
-    <section id="projects" className="w-full py-20 bg-black">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="w-full py-12 md:py-24 lg:py-32">
+      <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-12"
+          className="text-center mb-16"
         >
           <h2 className="text-3xl font-bold text-white mb-4">
-            Upcoming Projects
+            Featured Projects
           </h2>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-            While my project showcase is in development, here&apos;s a glimpse of what I&apos;m working on. 
-            Each project is carefully planned to demonstrate different aspects of full-stack development.
+            Here&apos;s what I&apos;m working on. Each project demonstrates my passion for creating innovative solutions.
           </p>
         </motion.div>
 

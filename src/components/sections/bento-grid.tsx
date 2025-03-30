@@ -1,11 +1,11 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Github, ExternalLink } from 'lucide-react'
+import { Github } from 'lucide-react'
 
 export function BentoGrid() {
   return (
-    <section className="w-full py-20">
+    <section className="w-full py-12 md:py-24 lg:py-32">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-3xl font-bold text-white text-center mb-12">My Journey</h2>
         
@@ -19,7 +19,6 @@ export function BentoGrid() {
             <p className="text-gray-400 mb-6">A showcase of my best work in full-stack development</p>
             <div className="flex gap-4">
               <Github className="h-6 w-6 text-gray-400" />
-              <ExternalLink className="h-6 w-6 text-gray-400" />
             </div>
           </motion.div>
 
