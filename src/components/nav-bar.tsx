@@ -10,6 +10,7 @@ export function NavBar() {
   const [isOpen, setIsOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const pathname = usePathname()
+  const basePath = process.env.NODE_ENV === 'production' ? '/my-portfolio' : '';
 
   const navItems = [
     { name: 'Home', path: '/' },
@@ -46,7 +47,7 @@ export function NavBar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex justify-between items-center py-4 md:justify-start md:space-x-10">
           <div className="flex justify-start lg:w-0 lg:flex-1">
-            <Link href="/" className="text-2xl font-bold text-white">
+            <Link href={`${basePath}/`} className="text-2xl font-bold text-white">
               Akash<span className="text-blue-500">.dev</span>
             </Link>
           </div>
@@ -71,9 +72,9 @@ export function NavBar() {
               {navItems.map((item) => (
                 <Link
                   key={item.name}
-                  href={item.path}
+                  href={`${basePath}${item.path}`}
                   className={`px-3 py-2 rounded-md text-sm font-medium transition-colors hover:text-white ${
-                    pathname === item.path
+                    pathname === item.path || pathname === `${basePath}${item.path}`
                       ? 'text-white bg-blue-500/20 hover:bg-blue-500/30'
                       : 'text-gray-300 hover:bg-gray-800/50'
                   }`}
@@ -106,9 +107,9 @@ export function NavBar() {
           {navItems.map((item) => (
             <Link
               key={item.name}
-              href={item.path}
+              href={`${basePath}${item.path}`}
               className={`block px-3 py-2 rounded-md text-base font-medium ${
-                pathname === item.path
+                pathname === item.path || pathname === `${basePath}${item.path}`
                   ? 'text-white bg-blue-500/20'
                   : 'text-gray-300 hover:bg-gray-800 hover:text-white'
               }`}
