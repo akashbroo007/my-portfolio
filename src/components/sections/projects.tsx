@@ -1,8 +1,6 @@
 'use client'
 
-import Image from 'next/image'
-import { Button } from "@/components/ui/button"
-import { Github, ExternalLink, Layout, Brain, Code2, ArrowRight } from "lucide-react"
+import { Layout, Brain, Code2, Github, ArrowRight } from "lucide-react"
 import { motion } from "framer-motion"
 
 export function Projects() {
@@ -46,7 +44,7 @@ export function Projects() {
             Upcoming Projects
           </h2>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-            While my project showcase is in development, here's a glimpse of what I'm working on. 
+            While my project showcase is in development, here&apos;s a glimpse of what I&apos;m working on. 
             Each project is carefully planned to demonstrate different aspects of full-stack development.
           </p>
         </motion.div>
@@ -97,8 +95,8 @@ export function Projects() {
               Want to Collaborate?
             </h2>
             <p className="text-gray-400 mb-6">
-              I'm always open to discussing new projects and opportunities. 
-              Let's create something amazing together!
+              I&apos;m always open to discussing new projects and opportunities. 
+              Let&apos;s create something amazing together!
             </p>
             <motion.a
               href="https://github.com/akashbroo007"
