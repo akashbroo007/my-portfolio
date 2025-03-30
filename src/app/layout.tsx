@@ -23,25 +23,39 @@ export default function RootLayout({
       <head>
         <script dangerouslySetInnerHTML={{
           __html: `
-            // SPA GitHub Pages router
+            // SPA GitHub Pages router with error handling
             (function() {
-              // Check if we have a saved path from 404.html redirect
-              const redirectPath = sessionStorage.getItem('redirect_path');
-              if (redirectPath) {
-                // Clear the redirect path from sessionStorage
-                sessionStorage.removeItem('redirect_path');
+              try {
+                // Check if we have a saved path from 404.html redirect
+                const redirectPath = sessionStorage.getItem('redirect_path');
                 
-                // Use the correct base path
-                const base = window.location.pathname.endsWith('/') 
-                  ? window.location.pathname.slice(0, -1) 
-                  : window.location.pathname;
-                
-                // Navigate to the correct route
-                const targetPath = base + redirectPath;
-                console.log('Redirecting to:', targetPath);
-                
-                // Update history to not break the back button
-                window.history.replaceState(null, null, targetPath);
+                if (redirectPath) {
+                  console.log('Found redirect path in sessionStorage:', redirectPath);
+                  
+                  // Clear the redirect path from sessionStorage
+                  sessionStorage.removeItem('redirect_path');
+                  
+                  // Detect environment
+                  const isGitHubPages = window.location.hostname.includes('github.io');
+                  const isIPAddress = /^\\d+\\.\\d+\\.\\d+\\.\\d+$/.test(window.location.hostname);
+                  
+                  // Get appropriate base path
+                  let basePath = '';
+                  if (isGitHubPages) {
+                    basePath = '/my-portfolio';
+                  }
+                  
+                  // If we're on an IP address (e.g., 172.20.10.2), keep the base path empty
+                  
+                  // Navigate to the correct route
+                  const targetPath = basePath + redirectPath;
+                  console.log('Redirecting to:', targetPath);
+                  
+                  // Update history to not break the back button
+                  window.history.replaceState(null, null, targetPath);
+                }
+              } catch (error) {
+                console.error('Error in SPA router script:', error);
               }
             })();
           `

@@ -4,40 +4,72 @@
   <meta charset="utf-8">
   <title>Redirecting...</title>
   <script>
-    // GitHub Pages SPA Router
+    // Single Page Apps for GitHub Pages and local IP addresses
     (function() {
-      // Save the path in sessionStorage
-      const segmentCount = 1; // "/my-portfolio" counts as 1 segment
+      const l = window.location;
+      
+      // Detect environment
+      const isGitHubPages = l.hostname.includes('github.io');
+      const isIPAddress = /^\d+\.\d+\.\d+\.\d+$/.test(l.hostname);
       const repo = "/my-portfolio";
       
-      // Get the URL path, removing any leading slashes
-      let l = window.location;
+      // Get the path without the repo name
       let path = l.pathname;
       
-      // Special handling for GitHub Pages
-      if (l.hostname.includes('github.io')) {
-        // For paths like /my-portfolio/about, we want to extract just "/about"
-        if (path.indexOf(repo) === 0) {
-          path = path.substring(repo.length);
-        }
-        
-        // Ensure it has a leading slash for consistency
-        if (path.charAt(0) !== '/') {
-          path = '/' + path;
-        }
-        
-        // Store the path for retrieval after redirect
-        sessionStorage.setItem('redirect_path', path);
-        
-        // Redirect to the home page
-        window.location.href = l.origin + repo;
+      // Github Pages path handling
+      if (isGitHubPages && path.indexOf(repo) === 0) {
+        path = path.substring(repo.length);
       }
+      
+      // Ensure path starts with a slash
+      if (path.charAt(0) !== '/') {
+        path = '/' + path;
+      }
+      
+      // Store current path in sessionStorage
+      try {
+        sessionStorage.setItem('redirect_path', path);
+        console.log('Saved path to sessionStorage:', path);
+      } catch (e) {
+        console.error('SessionStorage error:', e);
+      }
+      
+      // Create the redirect URL
+      let redirectURL;
+      
+      if (isGitHubPages) {
+        // For GitHub Pages
+        redirectURL = l.origin + repo;
+      } else if (isIPAddress) {
+        // For local IP address (like 172.20.10.2)
+        redirectURL = l.origin + '/';
+      } else {
+        // For other environments (localhost, etc.)
+        redirectURL = l.origin;
+      }
+      
+      console.log('Redirecting to:', redirectURL);
+      
+      // Redirect
+      window.location.href = redirectURL;
     })();
   </script>
 </head>
 <body>
   <h1>Page Not Found</h1>
   <p>Redirecting to homepage...</p>
-  <p>If you are not redirected automatically, please click <a href="/my-portfolio/">here</a>.</p>
+  <p>If you are not redirected automatically, please <a href="/" id="home-link">click here</a>.</p>
+  
+  <script>
+    // Update the homepage link based on environment
+    (function() {
+      const link = document.getElementById('home-link');
+      if (window.location.hostname.includes('github.io')) {
+        link.href = '/my-portfolio/';
+      } else {
+        link.href = '/';
+      }
+    })();
+  </script>
 </body>
 </html> 
