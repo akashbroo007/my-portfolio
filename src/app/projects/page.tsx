@@ -47,7 +47,7 @@ export default function Projects() {
               Upcoming Projects
             </h1>
             <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-              While my project showcase is in development, here's a glimpse of what I'm working on. 
+              While my project showcase is in development, here&apos;s a glimpse of what I&apos;m working on. 
               Each project is carefully planned to demonstrate different aspects of full-stack development.
             </p>
           </motion.div>

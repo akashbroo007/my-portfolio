@@ -1,6 +1,6 @@
 'use client'
 
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { useState, useRef, useEffect } from 'react'
 import { Footer } from '@/components/sections/footer'
 import { Mail, Github, Linkedin, Instagram, Send, MessageSquare, Coffee } from 'lucide-react'
@@ -13,12 +13,6 @@ export default function Contact() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   
   const buttonRef = useRef<HTMLButtonElement>(null)
-  const mouseX = useMotionValue(0)
-  const mouseY = useMotionValue(0)
-
-  const springConfig = { damping: 25, stiffness: 700 }
-  const x = useSpring(mouseX, springConfig)
-  const y = useSpring(mouseY, springConfig)
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {

@@ -1,6 +1,6 @@
 'use client';
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Github, ExternalLink, Code, Terminal, ChevronDown, ChevronUp } from "lucide-react";
+import { Github, ExternalLink, Code, Terminal, ChevronDown } from "lucide-react";
 import { useState, useRef } from "react";
 import { projects, techTools } from "@/data/about";
 import { Footer } from "@/components/sections/footer"
@@ -15,7 +15,7 @@ export default function About() {
 
   const yOffset = useTransform(scrollYProgress, [0, 1], [0, -50])
 
-  const [isStackOpen, setIsStackOpen] = useState(false);  // Fix: Add missing state
+  const [isStackOpen, setIsStackOpen] = useState(false);
 
   return (
     <>
@@ -38,7 +38,7 @@ export default function About() {
             >
               <h2 className="text-2xl font-semibold text-blue-400">My Journey</h2>
               <p className="text-gray-300 leading-relaxed">
-                I'm a passionate Full Stack Developer with a deep love for creating innovative web solutions. 
+                I&apos;m a passionate Full Stack Developer with a deep love for creating innovative web solutions. 
                 My journey in tech began with curiosity and has evolved into a professional pursuit of excellence 
                 in web development.
               </p>
