@@ -25,21 +25,23 @@ export default function RootLayout({
           __html: `
             // SPA GitHub Pages router
             (function() {
-              var redirect = sessionStorage.redirect;
-              delete sessionStorage.redirect;
-              if (redirect && redirect !== location.href) {
-                history.replaceState(null, null, redirect);
-              }
-              
-              // Check for path param in URL
-              const urlParams = new URLSearchParams(window.location.search);
-              const path = urlParams.get('path');
-              if (path) {
-                // Strip parameters and navigate to the path
-                const basePath = window.location.pathname.split('?')[0];
-                const navigateTo = basePath + path.replace(/^\/?/, '/');
-                // Clean up the URL
-                window.history.replaceState(null, null, navigateTo);
+              // Check if we have a saved path from 404.html redirect
+              const redirectPath = sessionStorage.getItem('redirect_path');
+              if (redirectPath) {
+                // Clear the redirect path from sessionStorage
+                sessionStorage.removeItem('redirect_path');
+                
+                // Use the correct base path
+                const base = window.location.pathname.endsWith('/') 
+                  ? window.location.pathname.slice(0, -1) 
+                  : window.location.pathname;
+                
+                // Navigate to the correct route
+                const targetPath = base + redirectPath;
+                console.log('Redirecting to:', targetPath);
+                
+                // Update history to not break the back button
+                window.history.replaceState(null, null, targetPath);
               }
             })();
           `

@@ -1,27 +1,40 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
 export default function NotFound() {
   const router = useRouter();
+  const pathname = usePathname();
   
   useEffect(() => {
-    // Check if we have a path in the URL from the 404.html redirect
-    const urlParams = new URLSearchParams(window.location.search);
-    const path = urlParams.get('path');
+    console.log('Not found page - current path:', pathname);
     
-    if (path) {
-      // Handle routing for GitHub Pages
-      const basePath = process.env.NODE_ENV === 'production' ? '/my-portfolio' : '';
-      router.push(`${basePath}${path}`);
+    // Check if we should try to recover from GitHub Pages 404
+    const isGitHubPages = typeof window !== 'undefined' && window.location.hostname.includes('github.io');
+    
+    if (isGitHubPages) {
+      // Store this invalid path in sessionStorage before redirecting to home
+      sessionStorage.setItem('redirect_path', '/');
+      console.log('Saving home path to sessionStorage for recovery');
+      
+      // Redirect to homepage after a brief delay
+      const timeout = setTimeout(() => {
+        const basePath = '/my-portfolio';
+        router.push(basePath);
+      }, 2000);
+      
+      return () => clearTimeout(timeout);
     }
-  }, [router]);
+  }, [pathname, router]);
 
   const getBasePath = () => {
-    return process.env.NODE_ENV === 'production' ? '/my-portfolio' : '';
+    if (typeof window !== 'undefined' && window.location.hostname.includes('github.io')) {
+      return '/my-portfolio';
+    }
+    return '';
   };
 
   return (

@@ -4,32 +4,40 @@
   <meta charset="utf-8">
   <title>Redirecting...</title>
   <script>
-    // Get the current path excluding the /my-portfolio prefix if on GitHub Pages
-    const location = window.location;
-    const pathSegmentsToKeep = 1; // Keep /my-portfolio
-    
-    // Get the pathname without the base path
-    let cleanPath = location.pathname;
-    if (location.hostname.includes('github.io')) {
-      // We're on GitHub Pages, handle the path
-      const pathArray = location.pathname.split('/');
-      // Remove empty first element and repo name
-      pathArray.splice(0, pathSegmentsToKeep + 1);
-      cleanPath = '/' + pathArray.join('/');
-    }
-    
-    // Store the path for redirect after navigation to home page
-    const redirectTo = location.protocol + '//' + location.hostname + 
-                      (location.port ? ':' + location.port : '') +
-                      '/my-portfolio/' +
-                      (cleanPath.length > 0 ? '?path=' + encodeURIComponent(cleanPath) : '');
-    
-    // Redirect to the home page with the path param
-    window.location.replace(redirectTo);
+    // GitHub Pages SPA Router
+    (function() {
+      // Save the path in sessionStorage
+      const segmentCount = 1; // "/my-portfolio" counts as 1 segment
+      const repo = "/my-portfolio";
+      
+      // Get the URL path, removing any leading slashes
+      let l = window.location;
+      let path = l.pathname;
+      
+      // Special handling for GitHub Pages
+      if (l.hostname.includes('github.io')) {
+        // For paths like /my-portfolio/about, we want to extract just "/about"
+        if (path.indexOf(repo) === 0) {
+          path = path.substring(repo.length);
+        }
+        
+        // Ensure it has a leading slash for consistency
+        if (path.charAt(0) !== '/') {
+          path = '/' + path;
+        }
+        
+        // Store the path for retrieval after redirect
+        sessionStorage.setItem('redirect_path', path);
+        
+        // Redirect to the home page
+        window.location.href = l.origin + repo;
+      }
+    })();
   </script>
 </head>
 <body>
-  <h1>Redirecting...</h1>
+  <h1>Page Not Found</h1>
+  <p>Redirecting to homepage...</p>
   <p>If you are not redirected automatically, please click <a href="/my-portfolio/">here</a>.</p>
 </body>
 </html> 
