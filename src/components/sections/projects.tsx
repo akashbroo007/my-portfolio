@@ -32,7 +32,7 @@ export function Projects() {
   ]
 
   return (
-    <section className="w-full py-12 md:py-24 lg:py-32" id="projects">
+    <section className="w-full py-12 md:py-24 lg:py-32 bg-black" id="projects">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -58,6 +58,7 @@ export function Projects() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 rounded-2xl p-6 border border-gray-700/50 hover:border-blue-500/50 transition-all duration-300 group"
+              style={{ backgroundColor: 'rgba(22, 22, 22, 0.8)' }}
             >
               <div className="flex items-center gap-4 mb-4">
                 {project.icon}
@@ -92,7 +93,7 @@ export function Projects() {
           transition={{ duration: 0.5, delay: 0.3 }}
           className="text-center max-w-2xl mx-auto"
         >
-          <div className="bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-3xl p-8 border border-gray-700/50">
+          <div className="bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-3xl p-8 border border-gray-700/50" style={{ backgroundColor: 'rgba(22, 22, 22, 0.8)' }}>
             <h2 className="text-2xl font-bold text-white mb-4">
               Want to Collaborate?
             </h2>

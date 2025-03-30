@@ -16,6 +16,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Akash Prabhakaran | Full Stack Developer",
   description: "Full Stack Developer Portfolio showcasing projects and technical skills",
+  themeColor: "#000000"
 }
 
 export default function RootLayout({
@@ -24,8 +25,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html lang="en" className="dark">
+      <body className={`${geistSans.variable} ${geistMono.variable} bg-black text-white`}>
         <ClientLayout>{children}</ClientLayout>
       </body>
     </html>

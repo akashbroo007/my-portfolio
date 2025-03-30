@@ -17,19 +17,23 @@ export default function ClientLayout({
       setIsLoading(false);
     }, 3000); // Adjust this time as needed
 
+    // Force dark mode
+    document.documentElement.classList.add('dark');
+    document.body.style.backgroundColor = '#000';
+    
     return () => clearTimeout(timer);
   }, []);
 
   return (
-    <>
+    <div className="bg-black text-white">
       <LoadingScreen 
         isLoading={isLoading} 
         onLoadingComplete={() => setIsLoading(false)} 
       />
-      <div className={isLoading ? 'opacity-0' : 'opacity-100 transition-opacity duration-500'}>
+      <div className={isLoading ? 'opacity-0' : 'opacity-100 transition-opacity duration-500 bg-black'}>
         <NavBar />
         {children}
       </div>
-    </>
+    </div>
   );
 } 
