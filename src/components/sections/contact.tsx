@@ -3,7 +3,7 @@ import Image from 'next/image'
 export function Contact() {
   return (
     <>
-      <section className="w-full py-12 bg-gray-900">
+      <section className="w-full py-12 bg-gray-900" id="contact">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white text-center mb-8">Get In Touch</h2>
           
@@ -81,13 +81,9 @@ export function Contact() {
       <footer className="w-full py-8 bg-gray-900 border-t border-gray-800">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center space-y-4">
-            <Image
-              src="/images/logo.png"
-              alt="KashVenture Inc. Logo"
-              width={40}
-              height={40}
-              className="opacity-80"
-            />
+            <div className="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center">
+              <span className="text-2xl font-bold text-blue-400">K</span>
+            </div>
             <div className="text-center">
               <p className="text-gray-400 text-sm">
                 © {new Date().getFullYear()} KashVenture Inc. All rights reserved.

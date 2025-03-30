@@ -42,12 +42,14 @@ export function TechStackItem({ name, image, description }: TechStackItemProps) 
       onMouseLeave={() => setIsOpen(false)}
     >
       <div className="flex flex-col items-center p-4 rounded-lg bg-gray-800/80 backdrop-blur-sm hover:bg-gray-700/80 transition-all duration-300 transform hover:scale-105">
-        <div className="w-14 h-14 relative mb-3">
+        <div className="w-14 h-14 relative mb-3 flex items-center justify-center">
           <Image
             src={image}
             alt={name}
-            fill
+            width={40}
+            height={40}
             className="object-contain drop-shadow-lg"
+            unoptimized
           />
         </div>
         <h3 className="text-lg font-semibold text-gray-100">{name}</h3>

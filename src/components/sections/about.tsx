@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 export function About() {
   return (
-    <section className="w-full py-20 bg-gray-900">
+    <section className="w-full py-20 bg-gray-900" id="about">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div>
@@ -21,10 +21,10 @@ export function About() {
                 I specialize in modern web technologies and have experience working with various frameworks and tools in both frontend and backend development. My approach combines technical expertise with creative problem-solving to deliver high-quality solutions.
               </p>
               <p>
-                When I'm not coding, I enjoy staying up-to-date with the latest tech trends, contributing to open-source projects, and sharing knowledge with the developer community.
+                When I&apos;m not coding, I enjoy staying up-to-date with the latest tech trends, contributing to open-source projects, and sharing knowledge with the developer community.
               </p>
               <div className="mt-6 space-y-2">
-                <p className="flex items-center">
+                <p className="flex items-center flex-wrap">
                   <span className="text-blue-400 mr-2">Email:</span>
                   <a href="mailto:akashfgz80@gmail.com" className="hover:text-blue-400 transition">akashfgz80@gmail.com</a>
                 </p>
@@ -38,9 +38,9 @@ export function About() {
                 </p>
               </div>
             </div>
-            <div className="mt-8 space-x-4">
+            <div className="mt-8 space-x-4 flex flex-wrap gap-4">
               <a 
-                href="https://github.com/yourusername" 
+                href="https://github.com/akashbroo007" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="inline-block bg-gray-800 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition"
@@ -48,11 +48,10 @@ export function About() {
                 GitHub Profile
               </a>
               <a 
-                href="/path-to-resume.pdf" 
-                target="_blank"
+                href="#contact" 
                 className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition"
               >
-                Download Resume
+                Contact Me
               </a>
             </div>
           </div>
@@ -60,14 +59,15 @@ export function About() {
           {/* Project Showcase Images */}
           <div>
             <h3 className="text-2xl font-bold text-white mb-6">Featured Projects</h3>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="relative group overflow-hidden rounded-lg">
                 <Image 
-                  src="/images/ecommerce-website.jpg"
+                  src="https://placehold.co/400x225/373737/FFFFFF/png?text=E-Commerce+Platform"
                   alt="E-Commerce Platform"
                   width={400}
                   height={225}
                   className="w-full aspect-video object-cover transform transition-transform duration-300 group-hover:scale-110"
+                  unoptimized
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
                   <p className="text-white p-4">E-Commerce Platform</p>
@@ -75,11 +75,12 @@ export function About() {
               </div>
               <div className="relative group overflow-hidden rounded-lg">
                 <Image 
-                  src="/images/task-manager.png"
+                  src="https://placehold.co/400x225/373737/FFFFFF/png?text=Task+Management"
                   alt="Task Management App"
                   width={400}
                   height={225}
                   className="w-full aspect-video object-cover transform transition-transform duration-300 group-hover:scale-110"
+                  unoptimized
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
                   <p className="text-white p-4">Task Management App</p>
@@ -87,11 +88,12 @@ export function About() {
               </div>
               <div className="relative group overflow-hidden rounded-lg">
                 <Image 
-                  src="/images/chatbot-concept.jpg"
+                  src="https://placehold.co/400x225/373737/FFFFFF/png?text=AI+Chat+Application"
                   alt="AI Chat Application"
                   width={400}
                   height={225}
                   className="w-full aspect-video object-cover transform transition-transform duration-300 group-hover:scale-110"
+                  unoptimized
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
                   <p className="text-white p-4">AI Chat Application</p>
@@ -99,11 +101,12 @@ export function About() {
               </div>
               <div className="relative group overflow-hidden rounded-lg">
                 <Image 
-                  src="/images/portfolio.jpg"
+                  src="https://placehold.co/400x225/373737/FFFFFF/png?text=Portfolio+Website"
                   alt="Portfolio Website"
                   width={400}
                   height={225}
                   className="w-full aspect-video object-cover transform transition-transform duration-300 group-hover:scale-110"
+                  unoptimized
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
                   <p className="text-white p-4">Portfolio Website</p>

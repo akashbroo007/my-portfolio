@@ -9,10 +9,21 @@ const nextConfig = {
       'cdn.worldvectorlogo.com',
       'upload.wikimedia.org',
       'avatars.githubusercontent.com',
-      'images.unsplash.com'
+      'images.unsplash.com',
+      'placehold.co'
     ],
     unoptimized: true,
-  }
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
+  },
+  reactStrictMode: false,
+  experimental: {
+    forceSwcTransforms: true,
+  },
 }
 
 module.exports = nextConfig
