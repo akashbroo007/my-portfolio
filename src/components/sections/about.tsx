@@ -8,8 +8,14 @@ export function About() {
           <div>
             <h2 className="text-3xl font-bold text-white mb-6">About Me</h2>
             <div className="space-y-4 text-gray-300">
-              <p>
-                I'm a Full Stack Developer with a passion for creating efficient, scalable, and user-friendly web applications. My journey in tech started with a curiosity about how websites work, and it has evolved into a professional career building complex web solutions.
+              <p className="text-gray-300 leading-relaxed">
+                I&apos;m a passionate Full Stack Developer with a deep love for creating innovative web solutions. 
+                My journey in tech began with curiosity and has evolved into a professional pursuit of excellence 
+                in web development.
+              </p>
+              <p className="text-gray-300 leading-relaxed">
+                I&apos;m always eager to learn and grow, staying up-to-date with the latest technologies 
+                and best practices in web development.
               </p>
               <p>
                 I specialize in modern web technologies and have experience working with various frameworks and tools in both frontend and backend development. My approach combines technical expertise with creative problem-solving to deliver high-quality solutions.

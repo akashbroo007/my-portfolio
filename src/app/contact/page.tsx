@@ -51,7 +51,7 @@ export default function Contact() {
       icon: <Linkedin className="w-6 h-6" />,
       href: 'https://linkedin.com/in/akash-prabhakaran',
       color: 'from-blue-500/20 to-blue-600/20 hover:border-blue-500/50',
-      description: 'Let\'s connect professionally'
+      description: 'Let&apos;s connect and discuss how we can work together!'
     },
     {
       name: 'Instagram',

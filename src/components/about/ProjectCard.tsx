@@ -1,14 +1,16 @@
-import { Github, ExternalLink } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion'
+import { projects } from '@/data/about'
 
-interface Project {
-  name: string;
-  description: string;
-  tags: string[];
-  link: string;
+interface ProjectCardProps {
+  title: string
+  description: string
+  tech: string[]
+  icon: React.ReactNode
+  status: string
+  timeline: string
 }
 
-export const ProjectCard = ({ projects }: { projects: Project[] }) => (
+export function ProjectCard({ title, description, tech, icon, status, timeline }: ProjectCardProps) {
   <motion.div
     initial={{ opacity: 0, x: -100 }}
     whileInView={{ opacity: 1, x: 0 }}
@@ -19,4 +21,4 @@ export const ProjectCard = ({ projects }: { projects: Project[] }) => (
   >
     {/* ... Project card content ... */}
   </motion.div>
-);
+}

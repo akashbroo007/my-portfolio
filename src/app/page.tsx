@@ -1,5 +1,7 @@
+'use client'
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, Github } from "lucide-react"
 import { Hero } from "@/components/sections/hero"
 import { About } from "@/components/sections/about"
 import { Skills } from "@/components/sections/skills"
@@ -9,6 +11,7 @@ import { Contact } from "@/components/sections/contact"
 import { Footer } from "@/components/sections/footer"
 import { ProjectButton } from "@/components/project-button"
 import { TechStackItem } from "@/components/tech-stack-item"
+import { motion } from 'framer-motion'
 
 export default function Home() {
   const techStack = [

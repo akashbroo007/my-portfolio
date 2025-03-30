@@ -100,7 +100,7 @@ export default function Projects() {
                 Projects Coming Soon!
               </h2>
               <p className="text-gray-400 mb-6">
-                I'm currently focused on building robust and innovative projects. 
+                I&apos;m currently focused on building robust and innovative projects. 
                 Follow my GitHub to stay updated on my latest developments and contributions.
               </p>
               <motion.a
