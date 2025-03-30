@@ -115,13 +115,7 @@ export default function Home() {
               ever since. I love creating full-stack applications that enhance user experience and solve real-world problems.
             </p>
             <div className="flex justify-center mt-6">
-              <Button 
-                variant="secondary" 
-                className="flex items-center mt-8"
-                onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
-              >
-                View My Projects <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
+              <ProjectButton />
             </div>
           </section>
 
