@@ -3,28 +3,38 @@
 <head>
   <meta charset="utf-8">
   <title>Akash Prabhakaran - Portfolio</title>
-  <script>
-    // Redirect to Next.js build output
-    (function() {
-      // Check if we're on GitHub Pages
-      const isGitHubPages = window.location.hostname.includes('github.io');
-      
-      if (isGitHubPages) {
-        // Preserve any query parameters
-        const queryString = window.location.search || '';
-        
-        // Redirect to the actual index.html in the out directory
-        window.location.replace('/my-portfolio' + queryString);
-      }
-    })();
-  </script>
-  <!-- Fallback meta redirect -->
-  <meta http-equiv="refresh" content="0;URL='/my-portfolio/'" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="refresh" content="0;url=/my-portfolio/" />
+  <style>
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      text-align: center;
+      padding: 50px 16px;
+      margin: 0;
+    }
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 16px;
+    }
+    p {
+      font-size: 1.25rem;
+      margin-bottom: 24px;
+      color: #aaa;
+    }
+    a {
+      color: #4299e1;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
-<body style="background-color: black; color: white; font-family: Arial, sans-serif;">
-  <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; text-align: center;">
-    <h1>Redirecting to Portfolio...</h1>
-    <p>If you are not redirected automatically, <a href="/my-portfolio/" style="color: #4299e1;">click here</a>.</p>
-  </div>
+<body>
+  <h1>Akash Prabhakaran</h1>
+  <p>Full Stack Developer</p>
+  <p>Redirecting to <a href="/my-portfolio/">portfolio</a>...</p>
 </body>
 </html> 

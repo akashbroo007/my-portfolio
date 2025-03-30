@@ -4,16 +4,7 @@ const nextConfig = {
   basePath: process.env.NODE_ENV === 'production' ? '/my-portfolio' : '',
   assetPrefix: process.env.NODE_ENV === 'production' ? '/my-portfolio/' : '',
   trailingSlash: true,
-  distDir: 'out',
   images: {
-    domains: [
-      'cdn.jsdelivr.net',
-      'cdn.worldvectorlogo.com',
-      'upload.wikimedia.org',
-      'avatars.githubusercontent.com',
-      'images.unsplash.com',
-      'placehold.co'
-    ],
     unoptimized: true,
     remotePatterns: [
       {
@@ -25,11 +16,6 @@ const nextConfig = {
   reactStrictMode: false,
   experimental: {
     forceSwcTransforms: true,
-  },
-  // Disable automatic prefetching which can cause issues in GitHub Pages
-  onDemandEntries: {
-    maxInactiveAge: 25 * 1000,
-    pagesBufferLength: 2,
   }
 }
 

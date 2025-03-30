@@ -2,21 +2,39 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Redirecting...</title>
-  <script>
-    // Simple GitHub Pages redirect
-    (function() {
-      // Go directly to the home page 
-      const githubPagesBase = '/my-portfolio';
-      window.location.href = githubPagesBase + '/';
-    })();
-  </script>
-  <!-- Fallback meta redirect -->
-  <meta http-equiv="refresh" content="0;URL='/my-portfolio/'" />
+  <title>Page Not Found</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="refresh" content="0;url=/my-portfolio/" />
+  <style>
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      text-align: center;
+      padding: 50px 16px;
+      margin: 0;
+    }
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 16px;
+    }
+    p {
+      font-size: 1.25rem;
+      margin-bottom: 24px;
+      color: #aaa;
+    }
+    a {
+      color: #4299e1;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
-<body style="background-color: black; color: white; font-family: Arial, sans-serif; text-align: center; padding-top: 50px;">
-  <h1>Page Not Found</h1>
-  <p>Redirecting to home page...</p>
-  <p>If you are not redirected automatically, <a href="/my-portfolio/" style="color: #4299e1;">click here</a>.</p>
+<body>
+  <h1>404</h1>
+  <p>Page not found</p>
+  <p>Redirecting to <a href="/my-portfolio/">homepage</a>...</p>
 </body>
 </html> 
