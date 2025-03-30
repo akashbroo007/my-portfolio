@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Redirecting...</title>
+  <script>
+    // Get the current path excluding the /my-portfolio prefix if on GitHub Pages
+    const location = window.location;
+    const pathSegmentsToKeep = 1; // Keep /my-portfolio
+    
+    // Get the pathname without the base path
+    let cleanPath = location.pathname;
+    if (location.hostname.includes('github.io')) {
+      // We're on GitHub Pages, handle the path
+      const pathArray = location.pathname.split('/');
+      // Remove empty first element and repo name
+      pathArray.splice(0, pathSegmentsToKeep + 1);
+      cleanPath = '/' + pathArray.join('/');
+    }
+    
+    // Store the path for redirect after navigation to home page
+    const redirectTo = location.protocol + '//' + location.hostname + 
+                      (location.port ? ':' + location.port : '') +
+                      '/my-portfolio/' +
+                      (cleanPath.length > 0 ? '?path=' + encodeURIComponent(cleanPath) : '');
+    
+    // Redirect to the home page with the path param
+    window.location.replace(redirectTo);
+  </script>
+</head>
+<body>
+  <h1>Redirecting...</h1>
+  <p>If you are not redirected automatically, please click <a href="/my-portfolio/">here</a>.</p>
+</body>
+</html> 

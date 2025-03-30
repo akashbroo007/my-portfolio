@@ -149,15 +149,15 @@ export default function Home() {
 
         {/* Header Section */}
         <header className="text-center mb-12 relative z-10 pt-12 text-white">
-          <ScrollReveal direction="up" delay={0.4}>
-            <h1 className="text-4xl md:text-6xl font-bold mb-6">Akash Prabhakaran</h1>
-          </ScrollReveal>
-          
           <ScrollReveal direction="down" delay={0.2}>
             <Avatar className="mx-auto mb-6 w-32 h-32 ring-4 ring-blue-500/30 ring-offset-4 ring-offset-black">
               <AvatarImage src="https://avatars.githubusercontent.com/u/143693850?s=400&u=3aa6b0677bbb4531794ad9724a0e0b5dc7e3236e&v=4" alt="Akash Prabhakaran" className="object-center" />
               <AvatarFallback>AP</AvatarFallback>
             </Avatar>
+          </ScrollReveal>
+          
+          <ScrollReveal direction="up" delay={0.4}>
+            <h1 className="text-4xl md:text-6xl font-bold mb-2">Akash Prabhakaran</h1>
           </ScrollReveal>
           
           <ScrollReveal direction="up" delay={0.6}>
