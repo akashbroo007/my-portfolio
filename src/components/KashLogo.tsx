@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { motion } from 'framer-motion';
 
@@ -58,7 +60,7 @@ const KashLogo: React.FC<{ className?: string, isLoading?: boolean }> = ({
             strokeLinejoin="round"
             fill={isLoading ? "none" : "#2D1A2D"}
             animate={{
-              fill: isLoading ? "none" : "#2D1A2D",
+              fill: isLoading ? ["none", "none"] : ["none", "#2D1A2D"],
               transition: { delay: 1.5, duration: 0.3 }
             }}
           />
@@ -74,7 +76,7 @@ const KashLogo: React.FC<{ className?: string, isLoading?: boolean }> = ({
             strokeLinejoin="round"
             fill={isLoading ? "none" : "#9D8BE5"}
             animate={{
-              fill: isLoading ? "none" : "#9D8BE5",
+              fill: isLoading ? ["none", "none"] : ["none", "#9D8BE5"],
               transition: { delay: 1.7, duration: 0.3 }
             }}
           />
@@ -90,7 +92,7 @@ const KashLogo: React.FC<{ className?: string, isLoading?: boolean }> = ({
             strokeLinejoin="round"
             fill={isLoading ? "none" : "#FF6B6B"}
             animate={{
-              fill: isLoading ? "none" : "#FF6B6B",
+              fill: isLoading ? ["none", "none"] : ["none", "#FF6B6B"],
               transition: { delay: 1.9, duration: 0.3 }
             }}
           />

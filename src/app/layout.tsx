@@ -19,8 +19,8 @@ export const metadata: Metadata = {
   title: "Akash Prabhakaran | Full Stack Developer",
   description: "Full Stack Developer Portfolio showcasing projects and technical skills",
   icons: {
-    icon: '/favicon.ico'
-  }
+    icon: '/icon.png',
+  },
 }
 
 export const viewport: Viewport = {

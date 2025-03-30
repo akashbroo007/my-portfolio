@@ -23,7 +23,7 @@ const nextConfig = {
   reactStrictMode: false,
   experimental: {
     forceSwcTransforms: true,
-  },
+  }
 }
 
 module.exports = nextConfig
