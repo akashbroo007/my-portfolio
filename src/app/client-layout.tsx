@@ -12,6 +12,15 @@ export default function ClientLayout({
 
   useEffect(() => {
     try {
+      // Disable loading animation completely on GitHub Pages
+      const isGitHubPages = typeof window !== 'undefined' && window.location.hostname.includes('github.io');
+      
+      if (isGitHubPages) {
+        console.log('Skipping loading animation for GitHub Pages');
+        setIsLoading(false);
+        return;
+      }
+      
       // Check if we already showed the loading screen in this session
       const hasLoadingBeenShown = sessionStorage.getItem('loading_shown');
       
@@ -54,13 +63,19 @@ export default function ClientLayout({
 
   return (
     <div className="bg-black text-white">
-      <LoadingScreen 
-        isLoading={isLoading} 
-        onLoadingComplete={() => setIsLoading(false)} 
-      />
-      <div className={isLoading ? 'opacity-0' : 'opacity-100 transition-opacity duration-500'}>
-        {children}
-      </div>
+      {!isLoading ? (
+        children
+      ) : (
+        <>
+          <LoadingScreen 
+            isLoading={isLoading} 
+            onLoadingComplete={() => setIsLoading(false)} 
+          />
+          <div className="opacity-0">
+            {children}
+          </div>
+        </>
+      )}
     </div>
   );
 } 
