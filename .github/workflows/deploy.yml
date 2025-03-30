@@ -7,10 +7,15 @@ on:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v3
@@ -19,6 +24,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
+          cache: 'npm'
 
       - name: Install dependencies 📦
         run: npm ci
@@ -26,8 +32,14 @@ jobs:
       - name: Build 🏗️
         run: npm run build
 
-      - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
         with:
-          folder: out
-          branch: gh-pages 
+          path: './out'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2 
