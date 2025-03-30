@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# KashVenture Portfolio
+
+A modern, responsive portfolio website built with Next.js, TypeScript, and Tailwind CSS. Features a sleek design with smooth animations and a custom loading screen.
+
+## Features
+
+- 🎨 Modern UI with custom animations
+- 🚀 Built with Next.js 14
+- 💎 TypeScript for type safety
+- 🎭 Framer Motion animations
+- 📱 Fully responsive design
+- 🌙 Custom logo and branding
+- ⚡ Fast page loads
+- 🎯 SEO optimized
+
+## Tech Stack
+
+- Next.js
+- TypeScript
+- Tailwind CSS
+- Framer Motion
+- Lucide Icons
+- Geist Font
 
 ## Getting Started
 
-First, run the development server:
+1. Clone the repository:
+```bash
+git clone https://github.com/akashbroo007/my-portfolio.git
+```
 
+2. Install dependencies:
+```bash
+npm install
+# or
+yarn install
+```
+
+3. Run the development server:
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+src/
+├── app/                    # Next.js app directory
+├── components/            # React components
+│   ├── sections/         # Page sections
+│   └── ui/              # UI components
+├── styles/              # Global styles
+└── types/              # TypeScript types
+```
 
-## Learn More
+## Deployment
 
-To learn more about Next.js, take a look at the following resources:
+The site is deployed on Vercel. Each push to the main branch triggers an automatic deployment.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+MIT License - feel free to use this code for your own portfolio!
 
-## Deploy on Vercel
+## Author
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Akash Prabhakaran - Full Stack Developer
+- GitHub: [@akashbroo007](https://github.com/akashbroo007)
+- LinkedIn: [Akash Prabhakaran](https://linkedin.com/in/akash-prabhakaran)
+- Instagram: [@_ak_a_sh__93](https://www.instagram.com/_ak_a_sh__93/?hl=en)

@@ -1,0 +1,112 @@
+import Image from 'next/image';
+
+export function About() {
+  return (
+    <section className="w-full py-20 bg-gray-900">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          <div>
+            <h2 className="text-3xl font-bold text-white mb-6">About Me</h2>
+            <div className="space-y-4 text-gray-300">
+              <p>
+                I'm a Full Stack Developer with a passion for creating efficient, scalable, and user-friendly web applications. My journey in tech started with a curiosity about how websites work, and it has evolved into a professional career building complex web solutions.
+              </p>
+              <p>
+                I specialize in modern web technologies and have experience working with various frameworks and tools in both frontend and backend development. My approach combines technical expertise with creative problem-solving to deliver high-quality solutions.
+              </p>
+              <p>
+                When I'm not coding, I enjoy staying up-to-date with the latest tech trends, contributing to open-source projects, and sharing knowledge with the developer community.
+              </p>
+              <div className="mt-6 space-y-2">
+                <p className="flex items-center">
+                  <span className="text-blue-400 mr-2">Email:</span>
+                  <a href="mailto:akashfgz80@gmail.com" className="hover:text-blue-400 transition">akashfgz80@gmail.com</a>
+                </p>
+                <p className="flex items-center">
+                  <span className="text-blue-400 mr-2">From:</span>
+                  <span>Kannur, Kerala</span>
+                </p>
+                <p className="flex items-center">
+                  <span className="text-blue-400 mr-2">Current Location:</span>
+                  <span>Mysore, India</span>
+                </p>
+              </div>
+            </div>
+            <div className="mt-8 space-x-4">
+              <a 
+                href="https://github.com/yourusername" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-block bg-gray-800 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition"
+              >
+                GitHub Profile
+              </a>
+              <a 
+                href="/path-to-resume.pdf" 
+                target="_blank"
+                className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition"
+              >
+                Download Resume
+              </a>
+            </div>
+          </div>
+          
+          {/* Project Showcase Images */}
+          <div>
+            <h3 className="text-2xl font-bold text-white mb-6">Featured Projects</h3>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="relative group overflow-hidden rounded-lg">
+                <Image 
+                  src="/images/ecommerce-website.jpg"
+                  alt="E-Commerce Platform"
+                  width={400}
+                  height={225}
+                  className="w-full aspect-video object-cover transform transition-transform duration-300 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+                  <p className="text-white p-4">E-Commerce Platform</p>
+                </div>
+              </div>
+              <div className="relative group overflow-hidden rounded-lg">
+                <Image 
+                  src="/images/task-manager.png"
+                  alt="Task Management App"
+                  width={400}
+                  height={225}
+                  className="w-full aspect-video object-cover transform transition-transform duration-300 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+                  <p className="text-white p-4">Task Management App</p>
+                </div>
+              </div>
+              <div className="relative group overflow-hidden rounded-lg">
+                <Image 
+                  src="/images/chatbot-concept.jpg"
+                  alt="AI Chat Application"
+                  width={400}
+                  height={225}
+                  className="w-full aspect-video object-cover transform transition-transform duration-300 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+                  <p className="text-white p-4">AI Chat Application</p>
+                </div>
+              </div>
+              <div className="relative group overflow-hidden rounded-lg">
+                <Image 
+                  src="/images/portfolio.jpg"
+                  alt="Portfolio Website"
+                  width={400}
+                  height={225}
+                  className="w-full aspect-video object-cover transform transition-transform duration-300 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+                  <p className="text-white p-4">Portfolio Website</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
