@@ -73,78 +73,84 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen overflow-hidden">
       <main className="flex-grow relative">
-      <div 
-          className="relative w-full flex flex-col items-center justify-center px-4 py-8"
-        style={{
-          backgroundImage: "url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          backgroundAttachment: "fixed"
-        }}
-      >
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-black/70 -z-10"></div>
+        <div 
+          className="relative w-full flex flex-col items-center justify-center px-4 py-8 pt-20"
+          id="home"
+          style={{
+            backgroundImage: "url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+            backgroundAttachment: "fixed"
+          }}
+        >
+          {/* Overlay */}
+          <div className="absolute inset-0 bg-black/70 -z-10"></div>
 
-        {/* Header Section */}
-          <header className="text-center mb-12 relative z-10 pt-20 text-white">
+          {/* Header Section */}
+          <header className="text-center mb-12 relative z-10 pt-12 text-white">
             <Avatar className="mx-auto mb-4 w-24 h-24">
-            <AvatarImage src="https://avatars.githubusercontent.com/u/143693850?s=400&u=3aa6b0677bbb4531794ad9724a0e0b5dc7e3236e&v=4" alt="Akash Prabhakaran" />
-            <AvatarFallback>AP</AvatarFallback>
-          </Avatar>
-          <h1 className="text-4xl font-bold mb-2">Akash Prabhakaran</h1>
-          <p className="text-lg text-gray-400">Passionate Full Stack Developer</p>
-        </header>
+              <AvatarImage src="https://avatars.githubusercontent.com/u/143693850?s=400&u=3aa6b0677bbb4531794ad9724a0e0b5dc7e3236e&v=4" alt="Akash Prabhakaran" />
+              <AvatarFallback>AP</AvatarFallback>
+            </Avatar>
+            <h1 className="text-4xl font-bold mb-2">Akash Prabhakaran</h1>
+            <p className="text-lg text-gray-400">Passionate Full Stack Developer</p>
+          </header>
 
-        {/* Welcome Section */}
+          {/* Welcome Section */}
           <section className="text-center max-w-4xl mx-auto mb-12 p-8 bg-gray-900/90 backdrop-blur-sm rounded-3xl shadow-lg shadow-gray-800 transform hover:scale-105 transition-transform text-white">
-          <h2 className="text-4xl font-bold mb-4">Welcome to My Portfolio</h2>
-          <p className="text-gray-400">
-            Hi there! I'm Akash Prabhakaran, a{" "}
-            <a 
+            <h2 className="text-4xl font-bold mb-4">Welcome to My Portfolio</h2>
+            <p className="text-gray-400">
+              Hi there! I&apos;m Akash Prabhakaran, a{" "}
+              <a 
                 href="https://www.google.com/search?q=vibe+coder+meaning"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-400 hover:text-blue-300 transition-colors"
-            >
-              Vibe Coder
-            </a>
-            , and I'm on a journey to become a skilled full stack developer.
-            I started this journey out of pure passion and have been exploring the world of web development
-            ever since. I love creating full-stack applications that enhance user experience and solve real-world problems.
-          </p>
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-400 hover:text-blue-300 transition-colors"
+              >
+                Vibe Coder
+              </a>
+              , and I&apos;m on a journey to become a skilled full stack developer.
+              I started this journey out of pure passion and have been exploring the world of web development
+              ever since. I love creating full-stack applications that enhance user experience and solve real-world problems.
+            </p>
             <div className="flex justify-center mt-6">
-            <ProjectButton />
-          </div>
-        </section>
+              <Button 
+                variant="secondary" 
+                className="flex items-center mt-8"
+                onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
+              >
+                View My Projects <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </div>
+          </section>
 
-        {/* Tech Stack Section */}
+          {/* Tech Stack Section */}
           <section className="text-center w-full max-w-4xl mx-auto mb-12 p-8 bg-gray-900/90 backdrop-blur-sm rounded-3xl shadow-lg shadow-gray-800 text-white">
-          <h2 className="text-3xl font-bold mb-4">Tech Stack</h2>
-          <p className="text-gray-400 mb-8">
-            Here are some of the technologies I use in my full-stack development journey:
-          </p>
+            <h2 className="text-3xl font-bold mb-4">Tech Stack</h2>
+            <p className="text-gray-400 mb-8">
+              Here are some of the technologies I use in my full-stack development journey:
+            </p>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-            {techStack.map((tech, index) => (
-              <TechStackItem 
-                key={index}
-                name={tech.name}
-                image={tech.image}
-                description={tech.description}
-              />
-            ))}
-          </div>
-        </section>
-      </div>
+              {techStack.map((tech, index) => (
+                <TechStackItem 
+                  key={index}
+                  name={tech.name}
+                  image={tech.image}
+                  description={tech.description}
+                />
+              ))}
+            </div>
+          </section>
+        </div>
 
-      {/* Additional Sections */}
-      <Hero />
-      <About />
-      <Skills />
-      <Projects />
-      <Experience />
-      <Contact />
-    </main>
+        {/* Additional Sections */}
+        <About />
+        <Skills />
+        <Projects />
+        <Experience />
+        <Contact />
+      </main>
       
       <Footer />
     </div>
