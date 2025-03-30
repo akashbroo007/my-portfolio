@@ -89,7 +89,7 @@ export default function Contact() {
               Let's Create Something Amazing Together
             </h1>
             <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-              Whether you have a project in mind or just want to chat, I'm always open to discussing new opportunities and ideas.
+              Whether you have a project in mind or just want to chat, I&apos;m always open to discussing new opportunities and ideas.
             </p>
           </motion.div>
 

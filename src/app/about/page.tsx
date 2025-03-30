@@ -4,6 +4,7 @@ import { Github, ExternalLink, Code, Terminal, ChevronDown, ChevronUp } from "lu
 import { useState, useRef } from "react";
 import { projects, techTools } from "@/data/about";
 import { Footer } from "@/components/sections/footer"
+import Image from 'next/image';
 
 export default function About() {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -209,7 +210,7 @@ export default function About() {
                         className="flex items-center gap-3 bg-gray-800/50 p-4 rounded-xl group hover:bg-gray-700/50 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/10"
                   >
                         <div className="relative w-10 h-10 flex items-center justify-center">
-                      <img 
+                      <Image 
                         src={tool.icon} 
                         alt={tool.name} 
                             className="w-8 h-8 group-hover:animate-spin transition-all duration-500 opacity-70 filter brightness-75 group-hover:opacity-100 group-hover:brightness-100"

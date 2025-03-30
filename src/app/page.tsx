@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { ArrowRight } from "lucide-react"
 import { Hero } from "@/components/sections/hero"
