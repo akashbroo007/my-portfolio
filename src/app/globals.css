@@ -38,6 +38,58 @@
   --foreground-rgb: 255, 255, 255;
   --background-start-rgb: 0, 0, 0;
   --background-end-rgb: 0, 0, 0;
+  
+  /* Gradient Color Variables */
+  --gradient-blue-start: #0ea5e9;
+  --gradient-blue-end: #3b82f6;
+  --gradient-purple-start: #8b5cf6;
+  --gradient-purple-end: #a855f7;
+  --gradient-pink-start: #ec4899;
+  --gradient-pink-end: #d946ef;
+  --gradient-green-start: #10b981;
+  --gradient-green-end: #6ee7b7;
+  --gradient-orange-start: #f59e0b;
+  --gradient-orange-end: #f97316;
+  
+  /* Multi-color gradients */
+  --gradient-rainbow: linear-gradient(
+    to right,
+    #f87171,
+    #facc15,
+    #4ade80,
+    #0ea5e9,
+    #8b5cf6,
+    #ec4899
+  );
+  
+  --gradient-cosmic: linear-gradient(
+    to right,
+    #111827,
+    #4f46e5,
+    #0ea5e9,
+    #1e293b
+  );
+  
+  --gradient-sunset: linear-gradient(
+    to right,
+    #f97316,
+    #f59e0b,
+    #ef4444
+  );
+  
+  --gradient-midnight: linear-gradient(
+    to right,
+    #0f172a,
+    #1e293b,
+    #334155
+  );
+  
+  --gradient-tech: linear-gradient(
+    to right,
+    #0ea5e9,
+    #4f46e5,
+    #a855f7
+  );
 }
 
 /* Apply dark mode by default */
@@ -57,6 +109,7 @@ body {
   scroll-behavior: smooth;
   scroll-padding-top: 4rem; /* Add padding for fixed header */
   min-height: 100vh;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
 /* Additional dark mode styles */
@@ -107,4 +160,148 @@ body {
   border-radius: 50%;
   z-index: 9998;
   transition: transform 0.1s;
+}
+
+/* Gradient utility classes */
+.gradient-text-blue {
+  background: linear-gradient(to right, var(--gradient-blue-start), var(--gradient-blue-end));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+.gradient-text-purple {
+  background: linear-gradient(to right, var(--gradient-purple-start), var(--gradient-purple-end));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+.gradient-text-pink {
+  background: linear-gradient(to right, var(--gradient-pink-start), var(--gradient-pink-end));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+.gradient-text-rainbow {
+  background: var(--gradient-rainbow);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  background-size: 200% auto;
+}
+
+.gradient-bg-blue {
+  background: linear-gradient(to bottom right, var(--gradient-blue-start), var(--gradient-blue-end));
+}
+
+.gradient-bg-purple {
+  background: linear-gradient(to bottom right, var(--gradient-purple-start), var(--gradient-purple-end));
+}
+
+.gradient-bg-tech {
+  background: var(--gradient-tech);
+}
+
+.gradient-bg-cosmic {
+  background: var(--gradient-cosmic);
+}
+
+/* Animate gradient background - Performance optimized */
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradientAnimation 8s ease infinite;
+  will-change: background-position;
+  transform: translateZ(0); /* Hardware acceleration */
+}
+
+.animate-gradient-text {
+  background-size: 200% auto;
+  animation: gradientTextAnimation 4s linear infinite;
+  will-change: background-position;
+  transform: translateZ(0); /* Hardware acceleration */
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+@keyframes gradientTextAnimation {
+  0% {
+    background-position: 0% center;
+  }
+  50% {
+    background-position: 100% center;
+  }
+  100% {
+    background-position: 0% center;
+  }
+}
+
+/* Glass morphism effects */
+.glass {
+  background: rgba(17, 17, 17, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transform: translateZ(0); /* Force GPU acceleration */
+}
+
+/* Performance optimizations for parallax and gradient effects */
+.parallax-container {
+  contain: content;
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform-style: preserve-3d;
+  isolation: isolate;
+}
+
+.gradient-container {
+  contain: content;
+  will-change: background-position;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Responsive optimizations */
+@media (max-width: 768px) {
+  .animate-gradient {
+    animation-duration: 15s; /* Slower animation on mobile */
+  }
+  
+  .animate-gradient-text {
+    animation-duration: 8s; /* Slower text animation on mobile */
+  }
+}
+
+/* Reduced motion preference support */
+@media (prefers-reduced-motion: reduce) {
+  .animate-gradient,
+  .animate-gradient-text {
+    animation: none !important;
+    background-position: 0 0 !important;
+  }
+  
+  .parallax-container {
+    will-change: auto;
+    transform: none !important;
+  }
+  
+  html {
+    scroll-behavior: auto;
+  }
 }

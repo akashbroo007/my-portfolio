@@ -7,6 +7,8 @@ import { ProjectButton } from "@/components/project-button"
 import { TechStackItem } from "@/components/tech-stack-item"
 import Link from "next/link"
 import { ScrollReveal, ScrollRevealContainer, ScrollRevealItem } from "@/components/ui/scroll-reveal"
+import { Parallax, ParallaxSection, ParallaxLayer } from "@/components/ui/parallax"
+import { GradientBackground, GradientText } from "@/components/ui/gradient"
 
 export default function Home() {
   const techStack = [
@@ -132,98 +134,167 @@ export default function Home() {
 
   return (
     <div className="flex flex-col overflow-hidden bg-black">
-      {/* Hero Section */}
-      <div 
-        className="relative w-full min-h-screen flex flex-col items-center justify-center px-4 py-8 pt-20"
-        id="home"
-        style={{
-          backgroundImage: `url('${process.env.NODE_ENV === 'production' ? '/my-portfolio/images/background.jpg' : '/images/background.jpg'}')`,
-          backgroundSize: "cover",
-          backgroundPosition: "center center",
-          backgroundRepeat: "no-repeat",
-          backgroundAttachment: "fixed"
-        }}
-      >
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-black/70 -z-10"></div>
-
-        {/* Header Section */}
-        <header className="text-center mb-12 relative z-10 pt-12 text-white">
-          <ScrollReveal direction="down" delay={0.2}>
-            <Avatar className="mx-auto mb-6 w-32 h-32 ring-4 ring-blue-500/30 ring-offset-4 ring-offset-black">
-              <AvatarImage src="https://avatars.githubusercontent.com/u/143693850?s=400&u=3aa6b0677bbb4531794ad9724a0e0b5dc7e3236e&v=4" alt="Akash Prabhakaran" className="object-center" />
-              <AvatarFallback>AP</AvatarFallback>
-            </Avatar>
-          </ScrollReveal>
+      {/* Hero Section with Enhanced Parallax */}
+      <div id="home">
+        <ParallaxSection
+          backgroundImage={process.env.NODE_ENV === 'production' ? '/my-portfolio/images/background.jpg' : '/images/background.jpg'}
+          speed={0.15}
+          overlayOpacity={0.65}
+          className="relative w-full min-h-screen flex flex-col items-center justify-center px-4 py-8 pt-20"
+        >
+          {/* Floating particles with parallax */}
+          <ParallaxLayer speed={0.3} className="pointer-events-none">
+            <div className="absolute top-1/4 left-1/4 w-8 h-8 rounded-full bg-blue-500/10 blur-xl"></div>
+            <div className="absolute top-1/3 right-1/4 w-12 h-12 rounded-full bg-purple-500/10 blur-xl"></div>
+            <div className="absolute bottom-1/4 left-1/3 w-10 h-10 rounded-full bg-cyan-500/10 blur-xl"></div>
+          </ParallaxLayer>
           
-          <ScrollReveal direction="up" delay={0.4}>
-            <h1 className="text-4xl md:text-6xl font-bold mb-2">Akash Prabhakaran</h1>
-          </ScrollReveal>
-          
-          <ScrollReveal direction="up" delay={0.6}>
-            <p className="text-xl text-gray-400">Passionate Full Stack Developer</p>
-          </ScrollReveal>
-        </header>
+          <ParallaxLayer speed={0.2} className="pointer-events-none">
+            <div className="absolute top-1/2 left-1/3 w-6 h-6 rounded-full bg-pink-500/10 blur-lg"></div>
+            <div className="absolute top-2/3 right-1/3 w-16 h-16 rounded-full bg-indigo-500/10 blur-xl"></div>
+            <div className="absolute bottom-1/3 right-1/4 w-8 h-8 rounded-full bg-green-500/10 blur-lg"></div>
+          </ParallaxLayer>
 
-        {/* Welcome Section */}
-        <ScrollReveal width="100%" delay={0.8} direction="up">
-          <section className="text-center max-w-4xl mx-auto mb-12 p-8 bg-gray-900/90 backdrop-blur-sm rounded-3xl shadow-lg shadow-gray-800 transform hover:scale-105 transition-transform text-white">
-            <h2 className="text-4xl font-bold mb-4">Welcome to My Portfolio</h2>
-            <p className="text-gray-400 text-lg mb-6">
-              Hi there! I&apos;m Akash Prabhakaran, a{" "}
-              <a 
-                href="https://www.google.com/search?q=vibe+coder+meaning"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-400 hover:text-blue-300 transition-colors"
-              >
-                Vibe Coder
-              </a>
-              , and I&apos;m on a journey to become a skilled full stack developer.
-              I started this journey out of pure passion and have been exploring the world of web development
-              ever since. I love creating full-stack applications that enhance user experience and solve real-world problems.
-            </p>
-            <div className="flex justify-center mt-6 space-x-4">
-              <ProjectButton />
-              <Link href={process.env.NODE_ENV === 'production' ? '/my-portfolio/about' : '/about'}>
-                <Button 
-                  variant="outline" 
-                  className="flex items-center mt-8"
+          {/* Header Section */}
+          <header className="text-center mb-12 relative z-10 pt-12 text-white w-full">
+            <ScrollReveal direction="down" delay={0.2}>
+              <Parallax speed={0.4} direction="down">
+                <Avatar className="mx-auto mb-6 w-32 h-32 ring-4 ring-blue-500/30 ring-offset-4 ring-offset-black">
+                  <AvatarImage src="https://avatars.githubusercontent.com/u/143693850?s=400&u=3aa6b0677bbb4531794ad9724a0e0b5dc7e3236e&v=4" alt="Akash Prabhakaran" className="object-center" />
+                  <AvatarFallback>AP</AvatarFallback>
+                </Avatar>
+              </Parallax>
+            </ScrollReveal>
+            
+            <ScrollReveal direction="up" delay={0.4}>
+              <h1 className="text-4xl md:text-6xl font-bold mb-2">
+                <GradientText
+                  colors={['#38bdf8', '#818cf8', '#4f46e5']}
+                  animate={true}
+                  animationDuration={6}
+                  className="font-bold"
                 >
-                  Learn About Me <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
-            </div>
-          </section>
-        </ScrollReveal>
+                  Akash Prabhakaran
+                </GradientText>
+              </h1>
+            </ScrollReveal>
+            
+            <ScrollReveal direction="up" delay={0.6}>
+              <Parallax speed={0.25} direction="up">
+                <p className="text-xl text-gray-400">Passionate Full Stack Developer</p>
+              </Parallax>
+            </ScrollReveal>
+          </header>
+
+          {/* Welcome Section */}
+          <ScrollReveal width="100%" delay={0.8} direction="up">
+            <section className="text-center max-w-4xl mx-auto mb-12 p-8 glass rounded-3xl shadow-lg shadow-gray-800 transform hover:scale-105 transition-transform text-white">
+              <h2 className="text-4xl font-bold mb-4">Welcome to My Portfolio</h2>
+              <p className="text-gray-400 text-lg mb-6">
+                Hi there! I&apos;m Akash Prabhakaran, a{" "}
+                <a 
+                  href="https://www.google.com/search?q=vibe+coder+meaning"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="gradient-text-blue animate-gradient-text"
+                >
+                  Vibe Coder
+                </a>
+                , and I&apos;m on a journey to become a skilled full stack developer.
+                I started this journey out of pure passion and have been exploring the world of web development
+                ever since. I love creating full-stack applications that enhance user experience and solve real-world problems.
+              </p>
+              <div className="flex justify-center mt-6 space-x-4">
+                <ProjectButton />
+                <Link href={process.env.NODE_ENV === 'production' ? '/my-portfolio/about' : '/about'}>
+                  <Button 
+                    variant="outline" 
+                    className="flex items-center mt-8"
+                  >
+                    Learn About Me <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
+              </div>
+            </section>
+          </ScrollReveal>
+        </ParallaxSection>
       </div>
 
-      {/* Services Section */}
-      <section className="py-20 bg-gradient-to-b from-black to-gray-900">
+      {/* Services Section with Enhanced Gradient Background */}
+      <GradientBackground
+        colors={['#0f172a', '#1e293b', '#1e1b4b', '#0f172a']}
+        direction="to-bottom-right"
+        animate={true}
+        className="py-20"
+        animationDuration={20}
+      >
         <div className="container mx-auto px-4">
           <ScrollReveal>
-            <h2 className="text-4xl font-bold text-center text-white mb-16">What I Do</h2>
+            <h2 className="text-4xl font-bold text-center text-white mb-4">
+              <GradientText
+                colors={['#a855f7', '#0ea5e9', '#6ee7b7']}
+                direction="to-right"
+                animate={true}
+                animationDuration={5}
+              >
+                What I Do
+              </GradientText>
+            </h2>
+          </ScrollReveal>
+          
+          <ScrollReveal delay={0.2}>
+            <p className="text-gray-400 text-center max-w-3xl mx-auto mb-16">
+              Crafting digital experiences with code and creativity
+            </p>
           </ScrollReveal>
           
           <ScrollRevealContainer className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto" staggerChildren={0.2}>
             {services.map((service, index) => (
               <ScrollRevealItem key={index} direction="up">
-                <div className="bg-black/40 backdrop-blur-sm p-8 rounded-3xl border border-gray-800 hover:border-blue-500/50 transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-blue-500/10 h-full">
-                  <div className="mb-6">{service.icon}</div>
-                  <h3 className="text-2xl font-bold text-white mb-4">{service.title}</h3>
-                  <p className="text-gray-400">{service.description}</p>
-                </div>
+                <Parallax 
+                  speed={0.1 + (index * 0.08)}
+                  direction={index % 2 === 0 ? "up" : "down"}
+                  className="h-full"
+                >
+                  <div className="glass p-8 rounded-3xl border border-gray-800 hover:border-blue-500/50 transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-blue-500/10 h-full">
+                    <div className="mb-6">{service.icon}</div>
+                    <h3 className="text-2xl font-bold text-white mb-4">{service.title}</h3>
+                    <p className="text-gray-400">{service.description}</p>
+                  </div>
+                </Parallax>
               </ScrollRevealItem>
             ))}
           </ScrollRevealContainer>
         </div>
-      </section>
+      </GradientBackground>
 
       {/* Featured Projects Section */}
-      <section className="py-20 bg-black">
-        <div className="container mx-auto px-4">
+      <section className="py-20 bg-black relative overflow-hidden">
+        {/* Background parallax elements */}
+        <div className="absolute -left-40 top-1/4 pointer-events-none">
+          <Parallax speed={0.05} direction="left">
+            <div className="w-80 h-80 rounded-full bg-blue-900/10 blur-[100px]"></div>
+          </Parallax>
+        </div>
+        
+        <div className="absolute -right-40 bottom-1/4 pointer-events-none">
+          <Parallax speed={0.07} direction="right">
+            <div className="w-80 h-80 rounded-full bg-purple-900/10 blur-[100px]"></div>
+          </Parallax>
+        </div>
+        
+        <div className="container mx-auto px-4 relative z-10">
           <ScrollReveal>
-            <h2 className="text-4xl font-bold text-center text-white mb-4">Featured Work</h2>
+            <h2 className="text-4xl font-bold text-center mb-4">
+              <GradientText
+                colors={['#fb923c', '#fbbf24', '#f87171']}
+                direction="to-right"
+                animate={true}
+                animationDuration={7}
+              >
+                Featured Work
+              </GradientText>
+            </h2>
           </ScrollReveal>
           <ScrollReveal delay={0.2}>
             <p className="text-gray-400 text-center max-w-3xl mx-auto mb-16">
@@ -234,78 +305,118 @@ export default function Home() {
           <ScrollRevealContainer className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto" staggerChildren={0.2}>
             {featuredProjects.map((project, index) => (
               <ScrollRevealItem key={index} direction="up">
-                <Link 
-                  href={process.env.NODE_ENV === 'production' ? `/my-portfolio${project.link}` : project.link} 
-                  className="group block h-full"
+                <Parallax 
+                  speed={0.2 - (index * 0.03)}
+                  direction="up" 
+                  className="h-full"
                 >
-                  <div className="bg-gray-900 rounded-xl overflow-hidden hover:shadow-lg hover:shadow-blue-500/10 transition-all duration-300 h-full">
-                    <div className="relative aspect-video overflow-hidden">
-                      <div 
-                        className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
-                        style={{ backgroundImage: `url(${project.image})`, objectPosition: 'center' }}
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-0 group-hover:opacity-70 transition-opacity duration-300" />
-                    </div>
-                    <div className="p-6">
-                      <h3 className="text-xl font-bold text-white mb-2">{project.title}</h3>
-                      <p className="text-gray-400 mb-4">{project.description}</p>
-                      <div className="flex flex-wrap gap-2">
-                        {project.tech.map((tech, idx) => (
-                          <span key={idx} className="px-2 py-1 text-xs bg-blue-500/20 text-blue-300 rounded-full">
-                            {tech}
-                          </span>
-                        ))}
+                  <Link 
+                    href={process.env.NODE_ENV === 'production' ? `/my-portfolio${project.link}` : project.link} 
+                    className="group block h-full"
+                  >
+                    <div className="bg-gray-900 rounded-xl overflow-hidden hover:shadow-lg hover:shadow-blue-500/10 transition-all duration-300 h-full">
+                      <div className="relative aspect-video overflow-hidden">
+                        <div 
+                          className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
+                          style={{ backgroundImage: `url(${project.image})`, objectPosition: 'center' }}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-0 group-hover:opacity-70 transition-opacity duration-300" />
+                      </div>
+                      <div className="p-6">
+                        <h3 className="text-xl font-bold text-white mb-2">{project.title}</h3>
+                        <p className="text-gray-400 mb-4">{project.description}</p>
+                        <div className="flex flex-wrap gap-2">
+                          {project.tech.map((tech, techIndex) => (
+                            <span 
+                              key={techIndex}
+                              className="px-2 py-1 text-xs rounded-full bg-gray-800 text-gray-300"
+                            >
+                              {tech}
+                            </span>
+                          ))}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </Link>
+                  </Link>
+                </Parallax>
               </ScrollRevealItem>
             ))}
           </ScrollRevealContainer>
-
-          <ScrollReveal delay={0.6}>
-            <div className="text-center mt-12">
-              <Link href={process.env.NODE_ENV === 'production' ? '/my-portfolio/projects' : '/projects'}>
-                <Button className="gap-2">
-                  View All Projects <ArrowRight className="h-4 w-4" />
-                </Button>
-              </Link>
-            </div>
-          </ScrollReveal>
         </div>
       </section>
 
-      {/* Tech Stack Section */}
-      <section className="py-20 bg-gradient-to-b from-gray-900 to-black">
+      {/* Tech Stack Section with Enhanced Gradient */}
+      <GradientBackground
+        colors={['#0f172a', '#0f1735', '#1e1b4b', '#312e81']}
+        direction="to-bottom"
+        className="py-20"
+        animate={true}
+        animationDuration={25}
+      >
         <div className="container mx-auto px-4">
           <ScrollReveal>
-            <h2 className="text-3xl font-bold text-center text-white mb-4">Tech Stack</h2>
+            <h2 className="text-4xl font-bold text-center mb-4">
+              <GradientText
+                colors={['#34d399', '#10b981', '#0ea5e9', '#2dd4bf']}
+                direction="to-right"
+                animate={true}
+                animationDuration={4}
+              >
+                Technologies I Work With
+              </GradientText>
+            </h2>
           </ScrollReveal>
           <ScrollReveal delay={0.2}>
-            <p className="text-gray-400 text-center max-w-3xl mx-auto mb-12">
-              Here are some of the technologies I use in my full-stack development journey:
+            <p className="text-gray-400 text-center max-w-3xl mx-auto mb-16">
+              A curated collection of tools and frameworks that power my development workflow
             </p>
           </ScrollReveal>
-          
-          <ScrollRevealContainer className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 max-w-5xl mx-auto" staggerChildren={0.05}>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 max-w-6xl mx-auto">
             {techStack.map((tech, index) => (
-              <ScrollRevealItem key={index} direction="up">
-                <TechStackItem 
+              <Parallax 
+                key={index} 
+                speed={0.05 + (index % 5) * 0.025}
+                direction={index % 4 === 0 ? 'up' : index % 4 === 1 ? 'down' : index % 4 === 2 ? 'left' : 'right'}
+              >
+                <TechStackItem
                   name={tech.name}
                   image={tech.image}
                   description={tech.description}
                 />
-              </ScrollRevealItem>
+              </Parallax>
             ))}
-          </ScrollRevealContainer>
+          </div>
         </div>
-      </section>
+      </GradientBackground>
 
       {/* Testimonials Section */}
-      <section className="py-20 bg-black">
-        <div className="container mx-auto px-4">
+      <section className="py-20 bg-black relative overflow-hidden">
+        {/* Background parallax elements */}
+        <div className="absolute -left-20 bottom-0 pointer-events-none">
+          <Parallax speed={0.08} direction="up">
+            <div className="w-60 h-60 rounded-full bg-purple-900/10 blur-[80px]"></div>
+          </Parallax>
+        </div>
+        
+        <div className="absolute right-20 top-20 pointer-events-none">
+          <Parallax speed={0.12} direction="down">
+            <div className="w-40 h-40 rounded-full bg-blue-900/10 blur-[80px]"></div>
+          </Parallax>
+        </div>
+        
+        <div className="container mx-auto px-4 relative z-10">
           <ScrollReveal>
-            <h2 className="text-4xl font-bold text-center text-white mb-4">Client Testimonials</h2>
+            <h2 className="text-4xl font-bold text-center mb-4">
+              <GradientText
+                colors={['#c084fc', '#a855f7', '#d946ef', '#e879f9']}
+                direction="to-right"
+                animate={true}
+                animationDuration={6}
+              >
+                Client Testimonials
+              </GradientText>
+            </h2>
           </ScrollReveal>
           <ScrollReveal delay={0.2}>
             <p className="text-gray-400 text-center max-w-3xl mx-auto mb-16">
@@ -313,58 +424,67 @@ export default function Home() {
             </p>
           </ScrollReveal>
 
-          <ScrollRevealContainer className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto" staggerChildren={0.2}>
+          <ScrollRevealContainer className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto" staggerChildren={0.15}>
             {testimonials.map((testimonial, index) => (
               <ScrollRevealItem key={index} direction="up">
-                <div className="bg-gradient-to-br from-gray-900 to-gray-800 p-8 rounded-2xl border border-gray-700 hover:border-purple-500/30 transition-all duration-300 h-full">
-                  <div className="flex items-center gap-2 mb-4">
-                    {[1, 2, 3, 4, 5].map((_, i) => (
-                      <div key={i} className="text-yellow-400">★</div>
-                    ))}
-                  </div>
-                  <p className="text-gray-300 mb-6 italic">"{testimonial.text}"</p>
-                  <div className="flex items-center gap-4">
-                    <Avatar>
-                      <AvatarImage src={testimonial.avatar} alt={testimonial.name} />
-                      <AvatarFallback>{testimonial.name.charAt(0)}</AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <h4 className="font-semibold text-white">{testimonial.name}</h4>
-                      <p className="text-sm text-gray-400">{testimonial.role}</p>
+                <Parallax 
+                  speed={0.18 - (index * 0.04)}
+                  direction="up" 
+                  className="h-full"
+                >
+                  <div className="glass p-8 rounded-3xl border border-gray-800 hover:border-purple-500/50 transition-all duration-300 h-full">
+                    <div className="flex items-start mb-6">
+                      <Avatar className="mr-4 ring-2 ring-purple-500/20">
+                        <AvatarImage src={testimonial.avatar} alt={testimonial.name} />
+                        <AvatarFallback>{testimonial.name[0]}</AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <h3 className="font-bold text-white">{testimonial.name}</h3>
+                        <p className="text-sm text-gray-400">{testimonial.role}</p>
+                      </div>
+                    </div>
+                    <p className="text-gray-300 italic">"{testimonial.text}"</p>
+                    <div className="flex mt-4">
+                      <Star className="w-4 h-4 text-yellow-500" fill="currentColor" />
+                      <Star className="w-4 h-4 text-yellow-500" fill="currentColor" />
+                      <Star className="w-4 h-4 text-yellow-500" fill="currentColor" />
+                      <Star className="w-4 h-4 text-yellow-500" fill="currentColor" />
+                      <Star className="w-4 h-4 text-yellow-500" fill="currentColor" />
                     </div>
                   </div>
-                </div>
+                </Parallax>
               </ScrollRevealItem>
             ))}
           </ScrollRevealContainer>
         </div>
       </section>
 
-      {/* Call to Action Section */}
-      <section className="py-20 bg-gradient-to-b from-black to-blue-950">
-        <div className="container mx-auto px-4">
-          <ScrollReveal width="100%">
-            <div className="max-w-4xl mx-auto text-center bg-gradient-to-r from-blue-900/40 to-purple-900/40 p-12 rounded-3xl border border-blue-700/30 backdrop-blur-sm">
-              <h2 className="text-4xl font-bold text-white mb-6">Ready to Start Your Project?</h2>
-              <p className="text-gray-300 text-lg mb-8">
-                Let&apos;s collaborate to create something amazing together. I&apos;m currently available for freelance projects and collaborations.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link href={process.env.NODE_ENV === 'production' ? '/my-portfolio/contact' : '/contact'}>
-                  <Button size="lg" className="gap-2 w-full sm:w-auto">
-                    <MessageSquare className="h-5 w-5" /> Get in Touch
-                  </Button>
-                </Link>
-                <Link href={process.env.NODE_ENV === 'production' ? '/my-portfolio/projects' : '/projects'}>
-                  <Button variant="outline" size="lg" className="gap-2 w-full sm:w-auto">
-                    <Clock className="h-5 w-5" /> View My Work
-                  </Button>
-                </Link>
-              </div>
-            </div>
+      {/* Call to Action with Enhanced Gradient */}
+      <GradientBackground
+        colors={['#111827', '#1e1b4b', '#312e81', '#4338ca']}
+        animate={true}
+        direction="to-bottom-right"
+        className="py-20"
+        animationDuration={18}
+      >
+        <Parallax speed={0.1} direction="up" className="container mx-auto px-4 text-center">
+          <ScrollReveal>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">Ready to start your project?</h2>
           </ScrollReveal>
-        </div>
-      </section>
+          <ScrollReveal delay={0.2}>
+            <p className="text-xl text-gray-300 mb-10 max-w-3xl mx-auto">
+              Let&apos;s collaborate to bring your ideas to life with modern technologies and creative solutions
+            </p>
+          </ScrollReveal>
+          <ScrollReveal delay={0.4}>
+            <Link href={process.env.NODE_ENV === 'production' ? '/my-portfolio/contact' : '/contact'}>
+              <Button className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 px-8 py-6 rounded-full text-lg font-medium animate-gradient">
+                Get in Touch <MessageSquare className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
+          </ScrollReveal>
+        </Parallax>
+      </GradientBackground>
     </div>
-  )
+  );
 }
