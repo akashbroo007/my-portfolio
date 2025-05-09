@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 import { usePathname, useRouter } from 'next/navigation'
+import { formatPath, getBasePath, getCleanPath, isGitHubPages } from '@/utils/navigation'
 
 export function NavBar() {
   const [isOpen, setIsOpen] = useState(false)
@@ -13,8 +14,10 @@ export function NavBar() {
   const router = useRouter()
   
   // Detect if we're on GitHub Pages
-  const [isGitHubPages, setIsGitHubPages] = useState(false)
-  const basePath = process.env.NODE_ENV === 'production' ? '/my-portfolio' : '';
+  const [onGitHubPages, setOnGitHubPages] = useState(false)
+  
+  // Get the basePath dynamically
+  const basePath = getBasePath();
 
   const navItems = [
     { name: 'Home', path: '/' },
@@ -26,7 +29,7 @@ export function NavBar() {
   // Check if we're on GitHub Pages
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      setIsGitHubPages(window.location.hostname.includes('github.io'))
+      setOnGitHubPages(isGitHubPages());
     }
   }, [])
 
@@ -46,21 +49,28 @@ export function NavBar() {
     }
   }, [isOpen])
   
-  // Handle navigation
+  // Handle navigation - improved version
   const handleNavigation = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
-    // Only handle navigation on GitHub Pages
-    if (isGitHubPages) {
-      e.preventDefault()
+    // Always use client-side navigation on GitHub Pages
+    if (onGitHubPages) {
+      e.preventDefault();
       
-      // Clean path for Next.js router (remove basePath)
-      const cleanPath = path === '/' ? '/' : path
-      
+      // Close mobile menu if open
       if (isOpen) {
-        setIsOpen(false)
+        setIsOpen(false);
       }
       
-      // Use Next.js router for client-side navigation
-      router.push(cleanPath)
+      try {
+        // Clean path for Next.js router
+        const cleanPath = getCleanPath(path);
+        
+        // Use the router for client-side navigation
+        router.push(cleanPath);
+      } catch (error) {
+        console.error('Navigation error:', error);
+        // Fallback to traditional navigation if router fails
+        window.location.href = formatPath(path);
+      }
     }
   }
 
@@ -77,7 +87,7 @@ export function NavBar() {
         <div className="flex justify-between items-center py-4 md:justify-start md:space-x-10">
           <div className="flex justify-start lg:w-0 lg:flex-1">
             <Link 
-              href={`${basePath}/`} 
+              href={formatPath('/')}
               className="text-2xl font-bold text-white"
               onClick={(e) => handleNavigation(e, '/')}
             >
@@ -105,7 +115,7 @@ export function NavBar() {
               {navItems.map((item) => (
                 <Link
                   key={item.name}
-                  href={`${basePath}${item.path}`}
+                  href={formatPath(item.path)}
                   className={`px-3 py-2 rounded-md text-sm font-medium transition-colors hover:text-white ${
                     pathname === item.path || pathname === `${basePath}${item.path}`
                       ? 'text-white bg-blue-500/20 hover:bg-blue-500/30'
@@ -141,15 +151,14 @@ export function NavBar() {
           {navItems.map((item) => (
             <Link
               key={item.name}
-              href={`${basePath}${item.path}`}
+              href={formatPath(item.path)}
               className={`block px-3 py-2 rounded-md text-base font-medium ${
                 pathname === item.path || pathname === `${basePath}${item.path}`
                   ? 'text-white bg-blue-500/20'
                   : 'text-gray-300 hover:bg-gray-800 hover:text-white'
               }`}
               onClick={(e) => {
-                handleNavigation(e, item.path)
-                setIsOpen(false)
+                handleNavigation(e, item.path);
               }}
             >
               {item.name}

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import LoadingScreen from "@/components/LoadingScreen"
 import { usePathname, useRouter } from 'next/navigation'
+import { formatPath, getBasePath, getCleanPath, isGitHubPages } from "@/utils/navigation"
 
 export default function ClientLayout({
   children,
@@ -12,14 +13,18 @@ export default function ClientLayout({
   const [isLoading, setIsLoading] = useState(true);
   const pathname = usePathname();
   const router = useRouter();
-  const isProduction = process.env.NODE_ENV === 'production';
+  const [onGitHubPages, setOnGitHubPages] = useState(false);
+  const basePath = getBasePath();
 
+  // Loading screen effect
   useEffect(() => {
     try {
-      // Disable loading animation completely on GitHub Pages
-      const isGitHubPages = typeof window !== 'undefined' && window.location.hostname.includes('github.io');
+      // Check if we're on GitHub Pages
+      const isOnGitHubPages = typeof window !== 'undefined' && isGitHubPages();
+      setOnGitHubPages(isOnGitHubPages);
       
-      if (isGitHubPages) {
+      // Disable loading animation completely on GitHub Pages
+      if (isOnGitHubPages) {
         console.log('Skipping loading animation for GitHub Pages');
         setIsLoading(false);
         return;
@@ -65,23 +70,17 @@ export default function ClientLayout({
     }
   }, []);
 
-  // GitHub Pages base path handling
+  // GitHub Pages base path handling - improved
   useEffect(() => {
-    // Check if we need to add meta tags for GitHub Pages
-    if (typeof window !== 'undefined') {
-      const hostname = window.location.hostname;
-      const isGitHubPages = hostname.includes('github.io');
-      
-      if (isGitHubPages) {
-        // We're on GitHub Pages, make sure all resources load correctly
-        const basePath = '/my-portfolio';
-        
+    // Only run on GitHub Pages
+    if (typeof window !== 'undefined' && isGitHubPages()) {
+      const handleAllNavigation = () => {
         // Fix any relative paths that might not include the base path
         const links = document.querySelectorAll('a[href^="/"]');
         links.forEach(link => {
           const href = link.getAttribute('href');
           if (href && !href.startsWith(basePath) && href !== '/') {
-            link.setAttribute('href', `${basePath}${href}`);
+            link.setAttribute('href', formatPath(href));
           }
         });
         
@@ -90,62 +89,83 @@ export default function ClientLayout({
         images.forEach(img => {
           const src = img.getAttribute('src');
           if (src && !src.startsWith(basePath)) {
-            img.setAttribute('src', `${basePath}${src}`);
+            img.setAttribute('src', formatPath(src));
           }
         });
+      };
+      
+      // Run once on initial load
+      handleAllNavigation();
+      
+      // Also run after any route change detected
+      const observer = new MutationObserver(handleAllNavigation);
+      observer.observe(document.body, { 
+        childList: true, 
+        subtree: true 
+      });
+      
+      // Set up a global click interceptor for all navigation links
+      const handleLinkClick = (e: MouseEvent) => {
+        const target = e.target as HTMLElement;
+        const link = target.closest('a');
         
-        // Handle 404 correctly by redirecting to the not-found page
-        if (window.location.pathname.includes('/my-portfolio/404.html')) {
-          router.replace(`${basePath}/not-found`);
+        if (!link) return; // Not a link click
+        
+        const href = link.getAttribute('href');
+        if (!href) return; // No href attribute
+        
+        // Ignore external links, anchors, and links with targets
+        if (
+          href.includes('://') || 
+          href.startsWith('#') || 
+          link.getAttribute('target') || 
+          link.getAttribute('rel') === 'noopener noreferrer'
+        ) {
+          return;
         }
         
-        // If we're at the root of the GitHub Pages site, redirect to the home page with the base path
-        if (window.location.pathname === '/my-portfolio/') {
-          // We're already at the home page with correct base path, no need to redirect
-        } else if (window.location.pathname === '/') {
-          // Redirect to the home page with the correct base path
-          window.location.href = `${basePath}/`;
-        }
-        
-        // Set up a click handler to intercept navigation links
-        const handleLinkClick = (e: MouseEvent) => {
-          const target = e.target as HTMLElement;
-          const link = target.closest('a');
+        // Prevent default navigation for internal links
+        if (href.startsWith('/') || href.startsWith(basePath)) {
+          e.preventDefault();
           
-          if (link && link.getAttribute('href')?.startsWith(basePath)) {
-            // This is a local link with the correct base path
-            const href = link.getAttribute('href');
-            if (href && !href.includes('://') && !link.getAttribute('target')) {
-              e.preventDefault();
-              
-              // Add a loading state if needed
-              setIsLoading(true);
-              
-              // Use the router for client-side navigation
-              const cleanPath = href.replace(basePath, '');
-              router.push(cleanPath);
-              
-              // Disable loading after navigation
-              setTimeout(() => {
-                setIsLoading(false);
-              }, 300);
-            }
+          try {
+            // Get clean path for router
+            const cleanPath = getCleanPath(href);
+            
+            // Use router for client-side navigation
+            router.push(cleanPath);
+          } catch (error) {
+            console.error('Navigation error:', error);
+            // Fallback to traditional navigation
+            window.location.href = href;
           }
-        };
-        
-        document.addEventListener('click', handleLinkClick);
-        
-        return () => {
-          document.removeEventListener('click', handleLinkClick);
-        };
-      }
+        }
+      };
+      
+      // Add the global click handler
+      document.addEventListener('click', handleLinkClick);
+      
+      return () => {
+        observer.disconnect();
+        document.removeEventListener('click', handleLinkClick);
+      };
     }
-  }, [pathname, router]);
+  }, [pathname, router, basePath]);
 
   // Handle navigation loading state
   useEffect(() => {
     const handleStart = () => setIsLoading(true);
-    const handleComplete = () => setIsLoading(false);
+    const handleComplete = () => {
+      // Use a small delay to prevent flicker
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 100);
+    };
+    
+    // For debugging on GitHub Pages
+    if (onGitHubPages) {
+      console.log('Current pathname:', pathname);
+    }
     
     window.addEventListener('beforeunload', handleStart);
     window.addEventListener('load', handleComplete);
@@ -154,7 +174,7 @@ export default function ClientLayout({
       window.removeEventListener('beforeunload', handleStart);
       window.removeEventListener('load', handleComplete);
     };
-  }, []);
+  }, [pathname, onGitHubPages]);
 
   return (
     <div className="bg-black text-white">

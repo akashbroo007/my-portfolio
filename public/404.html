@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Page Not Found</title>
+  <title>Redirecting...</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body {
@@ -27,64 +27,118 @@
       margin-bottom: 24px;
       color: #aaa;
     }
-    a {
-      color: #4299e1;
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-    .button {
+    .loader {
       display: inline-block;
-      padding: 10px 20px;
-      background-color: #4299e1;
-      color: white;
-      border-radius: 4px;
-      margin: 8px;
-      font-weight: 500;
+      position: relative;
+      width: 80px;
+      height: 80px;
+      margin-bottom: 20px;
     }
-    .button.outline {
-      background-color: transparent;
-      border: 1px solid #4299e1;
+    .loader div {
+      position: absolute;
+      top: 33px;
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: #4299e1;
+      animation-timing-function: cubic-bezier(0, 1, 1, 0);
+    }
+    .loader div:nth-child(1) {
+      left: 8px;
+      animation: loader1 0.6s infinite;
+    }
+    .loader div:nth-child(2) {
+      left: 8px;
+      animation: loader2 0.6s infinite;
+    }
+    .loader div:nth-child(3) {
+      left: 32px;
+      animation: loader2 0.6s infinite;
+    }
+    .loader div:nth-child(4) {
+      left: 56px;
+      animation: loader3 0.6s infinite;
+    }
+    @keyframes loader1 {
+      0% { transform: scale(0); }
+      100% { transform: scale(1); }
+    }
+    @keyframes loader3 {
+      0% { transform: scale(1); }
+      100% { transform: scale(0); }
+    }
+    @keyframes loader2 {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(24px, 0); }
     }
   </style>
   <script>
-    // GitHub Pages SPA redirect hack
+    // Single Page Apps for GitHub Pages
+    // MIT License
+    // Modified version from https://github.com/rafgraph/spa-github-pages
     (function() {
-      const basePath = '/my-portfolio';
-      const validRoutes = ['/', '/about/', '/projects/', '/contact/'];
+      // This is a fix for GitHub Pages SPA routing
+
+      // Settings
+      const pathSegmentsToKeep = 1; // Keep /my-portfolio/ segment
+      const validRootPaths = ['about', 'projects', 'contact']; // Valid direct paths under the root
       
-      // Get the path after the basePath
-      let path = window.location.pathname;
-      if (path.startsWith(basePath)) {
-        path = path.slice(basePath.length);
+      // Get current location
+      const location = window.location;
+      const baseHref = '/my-portfolio/';
+      
+      // Initial URL checks
+      const isNormalFile = location.pathname.endsWith('.html');
+      const is404Page = location.pathname.includes('/404') || location.pathname.includes('/404.html');
+      const isRoot = location.pathname === '/' || location.pathname === baseHref;
+      
+      // 1. If we're on the 404 page itself, redirect to home
+      if (is404Page) {
+        redirectToHome();
+        return;
       }
       
-      // Redirect to not-found page within the app for client-side handling
-      if (path === '/404.html' || path === '/404/') {
-        window.location.href = basePath + '/';
-      } else {
-        // Check if this is a valid route
-        const isValidRoute = validRoutes.some(route => path === route);
-        
-        if (isValidRoute) {
-          // If this is a valid route, redirect to it with the basePath
-          window.location.href = basePath + path;
-        } else {
-          // Otherwise redirect to the app's not-found page
-          window.location.href = basePath + '/#not-found';
-        }
+      // 2. If we're at the root, no need to redirect
+      if (isRoot) {
+        return;
+      }
+
+      // 3. If this is a normal file request (not an SPA route), don't do anything special
+      if (isNormalFile && !is404Page) {
+        return;
+      }
+      
+      // 4. Special handling for direct route attempts
+      const pathname = location.pathname;
+      const directPath = pathname.replace(baseHref, '').split('/')[0]; // Get first segment after basePath
+      
+      if (validRootPaths.includes(directPath)) {
+        redirectToPath(directPath);
+        return;
+      }
+      
+      // 5. Default to home if none of the above
+      redirectToHome();
+      
+      // Helper functions
+      function redirectToHome() {
+        window.location.replace(baseHref);
+      }
+      
+      function redirectToPath(path) {
+        window.location.replace(baseHref + path + '/');
       }
     })();
   </script>
 </head>
 <body>
-  <h1>404</h1>
-  <p>Page not found</p>
-  <p>Redirecting to homepage...</p>
-  <div>
-    <a href="/my-portfolio/" class="button">Return Home</a>
-    <a href="/my-portfolio/projects/" class="button outline">View Projects</a>
+  <div class="loader">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
   </div>
+  <h1>Redirecting...</h1>
+  <p>Please wait while we take you to the correct page</p>
 </body>
 </html> 

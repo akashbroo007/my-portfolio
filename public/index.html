@@ -4,7 +4,6 @@
   <meta charset="utf-8">
   <title>Akash Prabhakaran - Portfolio</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="refresh" content="0;url=/my-portfolio/" />
   <style>
     body {
       background-color: #000;
@@ -13,6 +12,11 @@
       text-align: center;
       padding: 50px 16px;
       margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
     h1 {
       font-size: 3rem;
@@ -30,11 +34,79 @@
     a:hover {
       text-decoration: underline;
     }
+    .loader {
+      display: inline-block;
+      position: relative;
+      width: 80px;
+      height: 80px;
+      margin-bottom: 20px;
+    }
+    .loader div {
+      position: absolute;
+      top: 33px;
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: #4299e1;
+      animation-timing-function: cubic-bezier(0, 1, 1, 0);
+    }
+    .loader div:nth-child(1) {
+      left: 8px;
+      animation: loader1 0.6s infinite;
+    }
+    .loader div:nth-child(2) {
+      left: 8px;
+      animation: loader2 0.6s infinite;
+    }
+    .loader div:nth-child(3) {
+      left: 32px;
+      animation: loader2 0.6s infinite;
+    }
+    .loader div:nth-child(4) {
+      left: 56px;
+      animation: loader3 0.6s infinite;
+    }
+    @keyframes loader1 {
+      0% { transform: scale(0); }
+      100% { transform: scale(1); }
+    }
+    @keyframes loader3 {
+      0% { transform: scale(1); }
+      100% { transform: scale(0); }
+    }
+    @keyframes loader2 {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(24px, 0); }
+    }
   </style>
+  <script src="/_spa-redirect.js"></script>
+  <script>
+    // Automatically redirect to the correct path
+    (function() {
+      const hostname = window.location.hostname;
+      
+      // Only run the redirect if we're on GitHub Pages
+      if (hostname.includes('github.io')) {
+        if (window.location.pathname === '/') {
+          // We're at the root of the GitHub Pages site
+          window.location.replace('/my-portfolio/');
+        } else if (window.location.pathname === '/my-portfolio/index.html') {
+          // Remove the index.html part for cleaner URLs
+          window.location.replace('/my-portfolio/');
+        }
+      }
+    })();
+  </script>
 </head>
 <body>
+  <div class="loader">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
   <h1>Akash Prabhakaran</h1>
   <p>Full Stack Developer</p>
-  <p>Redirecting to <a href="/my-portfolio/">portfolio</a>...</p>
+  <p>Redirecting to portfolio...</p>
 </body>
 </html> 
