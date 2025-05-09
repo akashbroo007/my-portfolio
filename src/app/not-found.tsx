@@ -3,9 +3,30 @@
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function NotFound() {
+  const router = useRouter();
   const basePath = process.env.NODE_ENV === 'production' ? '/my-portfolio' : '';
+  const [isGitHubPages, setIsGitHubPages] = useState(false);
+  
+  useEffect(() => {
+    // Check if we're on GitHub Pages
+    if (typeof window !== 'undefined') {
+      setIsGitHubPages(window.location.hostname.includes('github.io'));
+    }
+  }, []);
+  
+  // Handle navigation to prevent navigation issues
+  const handleNavigation = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
+    if (isGitHubPages) {
+      e.preventDefault();
+      
+      // Use Next.js router for client-side navigation
+      router.push(path);
+    }
+  };
   
   return (
     <div className="flex flex-col items-center justify-center min-h-screen text-center px-4 bg-black text-white">
@@ -18,12 +39,18 @@ export default function NotFound() {
         <h1 className="text-6xl font-bold mb-4">404</h1>
         <h2 className="text-2xl font-medium mb-8">This page could not be found.</h2>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link href={basePath + '/'}>
+          <Link 
+            href={basePath + '/'} 
+            onClick={(e) => handleNavigation(e, '/')}
+          >
             <Button>
               Return Home
             </Button>
           </Link>
-          <Link href={basePath + '/projects/'}>
+          <Link 
+            href={basePath + '/projects/'} 
+            onClick={(e) => handleNavigation(e, '/projects/')}
+          >
             <Button variant="outline">
               View Projects
             </Button>

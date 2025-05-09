@@ -4,12 +4,16 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 
 export function NavBar() {
   const [isOpen, setIsOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const pathname = usePathname()
+  const router = useRouter()
+  
+  // Detect if we're on GitHub Pages
+  const [isGitHubPages, setIsGitHubPages] = useState(false)
   const basePath = process.env.NODE_ENV === 'production' ? '/my-portfolio' : '';
 
   const navItems = [
@@ -18,6 +22,13 @@ export function NavBar() {
     { name: 'Projects', path: '/projects/' },
     { name: 'Contact', path: '/contact/' }
   ]
+  
+  // Check if we're on GitHub Pages
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setIsGitHubPages(window.location.hostname.includes('github.io'))
+    }
+  }, [])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -34,6 +45,24 @@ export function NavBar() {
       document.body.style.overflow = 'unset'
     }
   }, [isOpen])
+  
+  // Handle navigation
+  const handleNavigation = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
+    // Only handle navigation on GitHub Pages
+    if (isGitHubPages) {
+      e.preventDefault()
+      
+      // Clean path for Next.js router (remove basePath)
+      const cleanPath = path === '/' ? '/' : path
+      
+      if (isOpen) {
+        setIsOpen(false)
+      }
+      
+      // Use Next.js router for client-side navigation
+      router.push(cleanPath)
+    }
+  }
 
   return (
     <motion.nav
@@ -47,7 +76,11 @@ export function NavBar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex justify-between items-center py-4 md:justify-start md:space-x-10">
           <div className="flex justify-start lg:w-0 lg:flex-1">
-            <Link href={`${basePath}/`} className="text-2xl font-bold text-white">
+            <Link 
+              href={`${basePath}/`} 
+              className="text-2xl font-bold text-white"
+              onClick={(e) => handleNavigation(e, '/')}
+            >
               Akash<span className="text-blue-500">.dev</span>
             </Link>
           </div>
@@ -78,6 +111,7 @@ export function NavBar() {
                       ? 'text-white bg-blue-500/20 hover:bg-blue-500/30'
                       : 'text-gray-300 hover:bg-gray-800/50'
                   }`}
+                  onClick={(e) => handleNavigation(e, item.path)}
                 >
                   {item.name}
                 </Link>
@@ -113,7 +147,10 @@ export function NavBar() {
                   ? 'text-white bg-blue-500/20'
                   : 'text-gray-300 hover:bg-gray-800 hover:text-white'
               }`}
-              onClick={() => setIsOpen(false)}
+              onClick={(e) => {
+                handleNavigation(e, item.path)
+                setIsOpen(false)
+              }}
             >
               {item.name}
             </Link>

@@ -4,7 +4,6 @@
   <meta charset="utf-8">
   <title>Page Not Found</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="refresh" content="0;url=/my-portfolio/" />
   <style>
     body {
       background-color: #000;
@@ -13,9 +12,14 @@
       text-align: center;
       padding: 50px 16px;
       margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
     h1 {
-      font-size: 3rem;
+      font-size: 4rem;
       margin-bottom: 16px;
     }
     p {
@@ -30,11 +34,57 @@
     a:hover {
       text-decoration: underline;
     }
+    .button {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #4299e1;
+      color: white;
+      border-radius: 4px;
+      margin: 8px;
+      font-weight: 500;
+    }
+    .button.outline {
+      background-color: transparent;
+      border: 1px solid #4299e1;
+    }
   </style>
+  <script>
+    // GitHub Pages SPA redirect hack
+    (function() {
+      const basePath = '/my-portfolio';
+      const validRoutes = ['/', '/about/', '/projects/', '/contact/'];
+      
+      // Get the path after the basePath
+      let path = window.location.pathname;
+      if (path.startsWith(basePath)) {
+        path = path.slice(basePath.length);
+      }
+      
+      // Redirect to not-found page within the app for client-side handling
+      if (path === '/404.html' || path === '/404/') {
+        window.location.href = basePath + '/';
+      } else {
+        // Check if this is a valid route
+        const isValidRoute = validRoutes.some(route => path === route);
+        
+        if (isValidRoute) {
+          // If this is a valid route, redirect to it with the basePath
+          window.location.href = basePath + path;
+        } else {
+          // Otherwise redirect to the app's not-found page
+          window.location.href = basePath + '/#not-found';
+        }
+      }
+    })();
+  </script>
 </head>
 <body>
   <h1>404</h1>
   <p>Page not found</p>
-  <p>Redirecting to <a href="/my-portfolio/">homepage</a>...</p>
+  <p>Redirecting to homepage...</p>
+  <div>
+    <a href="/my-portfolio/" class="button">Return Home</a>
+    <a href="/my-portfolio/projects/" class="button outline">View Projects</a>
+  </div>
 </body>
 </html> 

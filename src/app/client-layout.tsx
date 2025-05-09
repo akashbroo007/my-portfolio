@@ -70,7 +70,9 @@ export default function ClientLayout({
     // Check if we need to add meta tags for GitHub Pages
     if (typeof window !== 'undefined') {
       const hostname = window.location.hostname;
-      if (hostname.includes('github.io')) {
+      const isGitHubPages = hostname.includes('github.io');
+      
+      if (isGitHubPages) {
         // We're on GitHub Pages, make sure all resources load correctly
         const basePath = '/my-portfolio';
         
@@ -96,6 +98,46 @@ export default function ClientLayout({
         if (window.location.pathname.includes('/my-portfolio/404.html')) {
           router.replace(`${basePath}/not-found`);
         }
+        
+        // If we're at the root of the GitHub Pages site, redirect to the home page with the base path
+        if (window.location.pathname === '/my-portfolio/') {
+          // We're already at the home page with correct base path, no need to redirect
+        } else if (window.location.pathname === '/') {
+          // Redirect to the home page with the correct base path
+          window.location.href = `${basePath}/`;
+        }
+        
+        // Set up a click handler to intercept navigation links
+        const handleLinkClick = (e: MouseEvent) => {
+          const target = e.target as HTMLElement;
+          const link = target.closest('a');
+          
+          if (link && link.getAttribute('href')?.startsWith(basePath)) {
+            // This is a local link with the correct base path
+            const href = link.getAttribute('href');
+            if (href && !href.includes('://') && !link.getAttribute('target')) {
+              e.preventDefault();
+              
+              // Add a loading state if needed
+              setIsLoading(true);
+              
+              // Use the router for client-side navigation
+              const cleanPath = href.replace(basePath, '');
+              router.push(cleanPath);
+              
+              // Disable loading after navigation
+              setTimeout(() => {
+                setIsLoading(false);
+              }, 300);
+            }
+          }
+        };
+        
+        document.addEventListener('click', handleLinkClick);
+        
+        return () => {
+          document.removeEventListener('click', handleLinkClick);
+        };
       }
     }
   }, [pathname, router]);
