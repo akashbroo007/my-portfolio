@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -39,7 +39,7 @@ jobs:
       - name: Create .nojekyll file
         run: touch out/.nojekyll
       
-      - name: Prepare 404 page
+      - name: Prepare 404 page (if exists)
         run: |
           if [ ! -f out/404.html ]; then
             if [ -f out/not-found.html ]; then
