@@ -1,6 +1,6 @@
 'use client';
 
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 
 type GradientDirection = 
@@ -35,72 +35,12 @@ export const GradientBackground: React.FC<GradientBackgroundProps> = ({
   opacity = 1,
   performance = 'medium',
 }): React.ReactElement => {
+  // All state declarations at the top
   const [shouldAnimate, setShouldAnimate] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   
-  // Check client preferences once mounted with safe guards against undefined
-  useEffect(() => {
-    // Only run on client side
-    if (typeof window === 'undefined') return;
-    
-    try {
-      // Safe checks for browser APIs
-      const prefersReducedMotion = 
-        window.matchMedia && 
-        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      
-      // Safely check for battery API
-      let isLowPowerMode = false;
-      if (
-        'getBattery' in navigator && 
-        typeof navigator.getBattery === 'function'
-      ) {
-        // Handle battery detection safely
-        navigator.getBattery?.()
-          .then((battery: any) => {
-            if (battery && typeof battery.charging === 'boolean' && typeof battery.level === 'number') {
-              isLowPowerMode = battery.charging === false && battery.level < 0.3;
-            }
-          })
-          .catch(() => {
-            // Silently fail if battery API fails
-          });
-      }
-      
-      // Safe window width check
-      const checkMobile = () => {
-        setIsMobile(window.innerWidth < 768);
-      };
-      
-      checkMobile();
-      
-      // Add resize listener with cleanup
-      if (window.addEventListener) {
-        window.addEventListener('resize', checkMobile);
-      }
-      
-      // Only animate if user hasn't requested reduced motion and performance allows
-      const shouldEnableAnimation = animate && 
-        !prefersReducedMotion && 
-        !(performance === 'low' && isMobile);
-        
-      setShouldAnimate(shouldEnableAnimation);
-      
-      // Cleanup
-      return () => {
-        if (window.removeEventListener) {
-          window.removeEventListener('resize', checkMobile);
-        }
-      };
-    } catch (error) {
-      // Fallback to no animation on error
-      console.error('Error in gradient animation setup:', error);
-      setShouldAnimate(false);
-    }
-  }, [animate, performance, isMobile]);
-
-  // Convert direction to CSS gradient direction
-  const getGradientDirection = () => {
+  // Convert direction to CSS gradient direction - using useMemo to avoid recomputation
+  const gradientDirection = useMemo(() => {
     switch (direction) {
       case 'to-right': return 'to right';
       case 'to-left': return 'to left';
@@ -113,28 +53,28 @@ export const GradientBackground: React.FC<GradientBackgroundProps> = ({
       case 'radial': return 'circle at center';
       default: return 'to bottom';
     }
-  };
-
-  // Generate gradient string with safety checks
-  const generateGradient = (colorList: string[]) => {
+  }, [direction]);
+  
+  // Generate gradient string with safety checks - using useMemo
+  const gradientString = useMemo(() => {
     // Ensure colorList is an array
-    if (!Array.isArray(colorList) || colorList.length === 0) {
+    if (!Array.isArray(colors) || colors.length === 0) {
       return 'linear-gradient(to bottom, #000, #333)'; // Fallback gradient
     }
     
     try {
       if (direction === 'radial') {
-        return `radial-gradient(${getGradientDirection()}, ${colorList.join(', ')})`;
+        return `radial-gradient(${gradientDirection}, ${colors.join(', ')})`;
       }
-      return `linear-gradient(${getGradientDirection()}, ${colorList.join(', ')})`;
+      return `linear-gradient(${gradientDirection}, ${colors.join(', ')})`;
     } catch (error) {
       console.error('Error generating gradient:', error);
       return 'linear-gradient(to bottom, #000, #333)'; // Fallback gradient
     }
-  };
-
-  // Animation variants for animated gradients - optimized
-  const variants = {
+  }, [colors, direction, gradientDirection]);
+  
+  // Animation variants defined once at the top level
+  const variants = useMemo(() => ({
     animate: {
       backgroundPosition: ['0% 0%', '100% 100%'],
       transition: {
@@ -144,10 +84,10 @@ export const GradientBackground: React.FC<GradientBackgroundProps> = ({
         repeatType: 'reverse' as const,
       },
     },
-  };
-
-  // Adjust animation parameters based on performance level
-  const getAnimationSettings = () => {
+  }), [animationDuration]);
+  
+  // Calculate animation settings based on component state - using useMemo
+  const animationSettings = useMemo(() => {
     // Default empty settings if no animation
     if (!shouldAnimate) {
       return {
@@ -187,21 +127,93 @@ export const GradientBackground: React.FC<GradientBackgroundProps> = ({
         variants: undefined as any,
       };
     }
-  };
-
-  const baseStyle: React.CSSProperties = {
-    backgroundImage: generateGradient(colors || []),
+  }, [shouldAnimate, performance, isMobile, animationDuration, variants]);
+  
+  // Base style derived from component props
+  const baseStyle = useMemo<React.CSSProperties>(() => ({
+    backgroundImage: gradientString,
     opacity,
     willChange: shouldAnimate ? 'background-position' : 'auto',
     transform: 'translateZ(0)', // Force GPU acceleration
-  };
-
-  // Safe extraction with defaults
+  }), [gradientString, opacity, shouldAnimate]);
+  
+  // Safe extraction with defaults - using useMemo
   const { 
     style: animationStyle = {}, 
     animate: animationState = undefined, 
     variants: animationVariants = undefined 
-  } = getAnimationSettings();
+  } = animationSettings;
+  
+  // Check client preferences once mounted with safe guards against undefined
+  useEffect(() => {
+    // Only run on client side
+    if (typeof window === 'undefined') return;
+    
+    let isActive = true; // Flag to track component mounted state
+    
+    try {
+      // Safe checks for browser APIs
+      const prefersReducedMotion = 
+        window.matchMedia && 
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      
+      // Safely check for battery API
+      let isLowPowerMode = false;
+      if (
+        'getBattery' in navigator && 
+        typeof navigator.getBattery === 'function'
+      ) {
+        // Handle battery detection safely
+        navigator.getBattery?.()
+          .then((battery: any) => {
+            if (!isActive) return; // Don't set state if unmounted
+            
+            if (battery && typeof battery.charging === 'boolean' && typeof battery.level === 'number') {
+              isLowPowerMode = battery.charging === false && battery.level < 0.3;
+            }
+          })
+          .catch(() => {
+            // Silently fail if battery API fails
+          });
+      }
+      
+      // Safe window width check
+      const checkMobile = () => {
+        if (!isActive) return; // Don't set state if unmounted
+        setIsMobile(window.innerWidth < 768);
+      };
+      
+      checkMobile();
+      
+      // Add resize listener with cleanup
+      if (window.addEventListener) {
+        window.addEventListener('resize', checkMobile);
+      }
+      
+      // Only animate if user hasn't requested reduced motion and performance allows
+      const shouldEnableAnimation = animate && 
+        !prefersReducedMotion && 
+        !(performance === 'low' && isMobile);
+      
+      if (isActive) {
+        setShouldAnimate(shouldEnableAnimation);
+      }
+      
+      // Cleanup
+      return () => {
+        isActive = false; // Mark component as unmounted
+        if (window.removeEventListener) {
+          window.removeEventListener('resize', checkMobile);
+        }
+      };
+    } catch (error) {
+      // Fallback to no animation on error
+      console.error('Error in gradient animation setup:', error);
+      if (isActive) {
+        setShouldAnimate(false);
+      }
+    }
+  }, [animate, performance, isMobile]);
 
   return (
     <motion.div
@@ -238,54 +250,12 @@ export const GradientText: React.FC<{
   as: Component = 'span',
   performance = 'medium',
 }): React.ReactElement => {
+  // All state declarations at the top
   const [shouldAnimate, setShouldAnimate] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   
-  // Check client preferences once mounted with safeguards
-  useEffect(() => {
-    // Only run on client side
-    if (typeof window === 'undefined') return;
-    
-    try {
-      // Safe media query check
-      const prefersReducedMotion = 
-        window.matchMedia && 
-        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      
-      // Safe mobile detection
-      const checkMobile = () => {
-        setIsMobile(window.innerWidth < 768);
-      };
-      
-      checkMobile();
-      
-      // Add resize listener with cleanup
-      if (window.addEventListener) {
-        window.addEventListener('resize', checkMobile);
-      }
-      
-      // For text animations, we're more conservative (they can be visually distracting)
-      const shouldEnableAnimation = animate && 
-        !prefersReducedMotion && 
-        !(performance === 'low' || (performance === 'medium' && isMobile));
-        
-      setShouldAnimate(shouldEnableAnimation);
-      
-      // Cleanup
-      return () => {
-        if (window.removeEventListener) {
-          window.removeEventListener('resize', checkMobile);
-        }
-      };
-    } catch (error) {
-      // Fallback to no animation on error
-      console.error('Error in gradient text animation setup:', error);
-      setShouldAnimate(false);
-    }
-  }, [animate, performance]);
-
-  // Convert direction to CSS gradient direction
-  const getGradientDirection = () => {
+  // Convert direction to CSS gradient direction - using useMemo
+  const gradientDirection = useMemo(() => {
     switch (direction) {
       case 'to-right': return 'to right';
       case 'to-left': return 'to left';
@@ -298,28 +268,28 @@ export const GradientText: React.FC<{
       case 'radial': return 'circle at center';
       default: return 'to right';
     }
-  };
-
-  // Generate gradient string with safety checks
-  const generateGradient = (colorList: string[]) => {
-    // Ensure colorList is an array
-    if (!Array.isArray(colorList) || colorList.length === 0) {
+  }, [direction]);
+  
+  // Generate gradient string with safety checks - using useMemo
+  const gradientString = useMemo(() => {
+    // Ensure colors is an array
+    if (!Array.isArray(colors) || colors.length === 0) {
       return 'linear-gradient(to right, #fff, #ccc)'; // Fallback gradient
     }
     
     try {
       if (direction === 'radial') {
-        return `radial-gradient(${getGradientDirection()}, ${colorList.join(', ')})`;
+        return `radial-gradient(${gradientDirection}, ${colors.join(', ')})`;
       }
-      return `linear-gradient(${getGradientDirection()}, ${colorList.join(', ')})`;
+      return `linear-gradient(${gradientDirection}, ${colors.join(', ')})`;
     } catch (error) {
       console.error('Error generating text gradient:', error);
       return 'linear-gradient(to right, #fff, #ccc)'; // Fallback gradient
     }
-  };
-
-  // Animation variants - simplified for text
-  const variants = {
+  }, [colors, direction, gradientDirection]);
+  
+  // Animation variants for text gradients - using useMemo
+  const variants = useMemo(() => ({
     animate: {
       backgroundPosition: ['0% center', '100% center'],
       transition: {
@@ -329,10 +299,10 @@ export const GradientText: React.FC<{
         repeatType: 'reverse' as const,
       },
     },
-  };
-
-  // Get animation settings based on performance level with safety
-  const getAnimationSettings = () => {
+  }), [animationDuration]);
+  
+  // Calculate animation settings - using useMemo
+  const animationSettings = useMemo(() => {
     if (!shouldAnimate) {
       return {
         style: {} as React.CSSProperties,
@@ -367,24 +337,76 @@ export const GradientText: React.FC<{
         variants: undefined as any,
       };
     }
-  };
-
-  const baseStyle: React.CSSProperties = {
-    backgroundImage: generateGradient(colors || []),
+  }, [shouldAnimate, performance, isMobile, animationDuration, variants]);
+  
+  // Base style derived from props - using useMemo
+  const baseStyle = useMemo<React.CSSProperties>(() => ({
+    backgroundImage: gradientString,
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
     backgroundClip: 'text',
     color: 'transparent',
     display: 'inline-block',
     willChange: shouldAnimate ? 'background-position' : 'auto',
-  };
-
+  }), [gradientString, shouldAnimate]);
+  
   // Safe extraction with defaults
   const { 
     style: animationStyle = {}, 
     animate: animationState = undefined, 
     variants: animationVariants = undefined 
-  } = getAnimationSettings();
+  } = animationSettings;
+  
+  // Check client preferences once mounted with safeguards
+  useEffect(() => {
+    // Only run on client side
+    if (typeof window === 'undefined') return;
+    
+    let isActive = true; // Flag to track component mounted state
+    
+    try {
+      // Safe media query check
+      const prefersReducedMotion = 
+        window.matchMedia && 
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      
+      // Safe mobile detection
+      const checkMobile = () => {
+        if (!isActive) return; // Don't set state if unmounted
+        setIsMobile(window.innerWidth < 768);
+      };
+      
+      checkMobile();
+      
+      // Add resize listener with cleanup
+      if (window.addEventListener) {
+        window.addEventListener('resize', checkMobile);
+      }
+      
+      // For text animations, we're more conservative (they can be visually distracting)
+      const shouldEnableAnimation = animate && 
+        !prefersReducedMotion && 
+        !(performance === 'low' || (performance === 'medium' && isMobile));
+      
+      if (isActive) {
+        setShouldAnimate(shouldEnableAnimation);
+      }
+      
+      // Cleanup
+      return () => {
+        isActive = false; // Mark component as unmounted
+        if (window.removeEventListener) {
+          window.removeEventListener('resize', checkMobile);
+        }
+      };
+    } catch (error) {
+      // Fallback to no animation on error
+      console.error('Error in gradient text animation setup:', error);
+      if (isActive) {
+        setShouldAnimate(false);
+      }
+    }
+  }, [animate, performance, isMobile]);
 
   return (
     <motion.span
