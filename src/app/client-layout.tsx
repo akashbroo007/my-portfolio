@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import LoadingScreen from "@/components/LoadingScreen"
+import { usePathname, useRouter } from 'next/navigation'
 
 export default function ClientLayout({
   children,
@@ -9,6 +10,8 @@ export default function ClientLayout({
   children: React.ReactNode
 }) {
   const [isLoading, setIsLoading] = useState(true);
+  const pathname = usePathname();
+  const router = useRouter();
   const isProduction = process.env.NODE_ENV === 'production';
 
   useEffect(() => {
@@ -88,8 +91,27 @@ export default function ClientLayout({
             img.setAttribute('src', `${basePath}${src}`);
           }
         });
+        
+        // Handle 404 correctly by redirecting to the not-found page
+        if (window.location.pathname.includes('/my-portfolio/404.html')) {
+          router.replace(`${basePath}/not-found`);
+        }
       }
     }
+  }, [pathname, router]);
+
+  // Handle navigation loading state
+  useEffect(() => {
+    const handleStart = () => setIsLoading(true);
+    const handleComplete = () => setIsLoading(false);
+    
+    window.addEventListener('beforeunload', handleStart);
+    window.addEventListener('load', handleComplete);
+    
+    return () => {
+      window.removeEventListener('beforeunload', handleStart);
+      window.removeEventListener('load', handleComplete);
+    };
   }, []);
 
   return (
