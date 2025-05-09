@@ -9,6 +9,7 @@ export default function ClientLayout({
   children: React.ReactNode
 }) {
   const [isLoading, setIsLoading] = useState(true);
+  const isProduction = process.env.NODE_ENV === 'production';
 
   useEffect(() => {
     try {
@@ -58,6 +59,36 @@ export default function ClientLayout({
       // If any error occurs, skip loading
       console.error('Error in loading screen:', e);
       setIsLoading(false);
+    }
+  }, []);
+
+  // GitHub Pages base path handling
+  useEffect(() => {
+    // Check if we need to add meta tags for GitHub Pages
+    if (typeof window !== 'undefined') {
+      const hostname = window.location.hostname;
+      if (hostname.includes('github.io')) {
+        // We're on GitHub Pages, make sure all resources load correctly
+        const basePath = '/my-portfolio';
+        
+        // Fix any relative paths that might not include the base path
+        const links = document.querySelectorAll('a[href^="/"]');
+        links.forEach(link => {
+          const href = link.getAttribute('href');
+          if (href && !href.startsWith(basePath) && href !== '/') {
+            link.setAttribute('href', `${basePath}${href}`);
+          }
+        });
+        
+        // Fix any image sources that might not include the base path
+        const images = document.querySelectorAll('img[src^="/"]');
+        images.forEach(img => {
+          const src = img.getAttribute('src');
+          if (src && !src.startsWith(basePath)) {
+            img.setAttribute('src', `${basePath}${src}`);
+          }
+        });
+      }
     }
   }, []);
 
