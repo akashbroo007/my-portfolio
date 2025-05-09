@@ -132,6 +132,9 @@ export default function Home() {
     }
   ]
 
+  const aboutPath = process.env.NODE_ENV === 'production' ? '/my-portfolio/about' : '/about';
+  const contactPath = process.env.NODE_ENV === 'production' ? '/my-portfolio/contact' : '/contact';
+
   return (
     <div className="flex flex-col overflow-hidden bg-black">
       {/* Hero Section with Enhanced Parallax */}
@@ -206,7 +209,7 @@ export default function Home() {
               </p>
               <div className="flex justify-center mt-6 space-x-4">
                 <ProjectButton />
-                <Link href={process.env.NODE_ENV === 'production' ? '/my-portfolio/about' : '/about'}>
+                <Link href={aboutPath}>
                   <Button 
                     variant="outline" 
                     className="flex items-center mt-8"
@@ -477,7 +480,7 @@ export default function Home() {
             </p>
           </ScrollReveal>
           <ScrollReveal delay={0.4}>
-            <Link href={process.env.NODE_ENV === 'production' ? '/my-portfolio/contact' : '/contact'}>
+            <Link href={contactPath}>
               <Button className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 px-8 py-6 rounded-full text-lg font-medium animate-gradient">
                 Get in Touch <MessageSquare className="ml-2 h-5 w-5" />
               </Button>

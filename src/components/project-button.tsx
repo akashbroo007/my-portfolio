@@ -2,22 +2,19 @@
 
 import { Button } from "@/components/ui/button"
 import { ArrowRight } from "lucide-react"
-import { useRouter } from "next/navigation"
+import Link from "next/link"
 
 export function ProjectButton() {
-  const router = useRouter();
+  const projectPath = process.env.NODE_ENV === 'production' ? '/my-portfolio/projects' : '/projects';
   
-  const handleClick = () => {
-    router.push('/projects');
-  };
-
   return (
-    <Button 
-      variant="secondary" 
-      className="flex items-center mt-8"
-      onClick={handleClick}
-    >
-      View My Projects <ArrowRight className="ml-2 h-4 w-4" />
-    </Button>
+    <Link href={projectPath}>
+      <Button 
+        variant="secondary" 
+        className="flex items-center mt-8"
+      >
+        View My Projects <ArrowRight className="ml-2 h-4 w-4" />
+      </Button>
+    </Link>
   )
 }

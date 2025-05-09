@@ -8,6 +8,7 @@ import { useState } from "react";
 import { Code, ChevronDown } from "lucide-react";
 import { Parallax } from "@/components/ui/parallax";
 import { GradientBackground, GradientText } from "@/components/ui/gradient";
+import Link from "next/link";
 
 export function Journey() {
   const [isStackOpen, setIsStackOpen] = useState(false);
@@ -86,9 +87,11 @@ export function Journey() {
                       speed={0.05 + (index * 0.03)} 
                       direction={index % 2 === 0 ? "up" : "down"}
                     >
-                      <div 
-                        className="bg-gradient-to-br from-gray-800/30 to-gray-900/30 backdrop-blur-sm rounded-xl p-4 hover:from-purple-900/20 hover:to-blue-900/20 transition-colors duration-300 cursor-pointer border border-gray-700/30 hover:border-blue-500/30 shadow-lg shadow-black/10"
-                        onClick={() => window.open(project.link, '_blank')}
+                      <a 
+                        href={project.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="bg-gradient-to-br from-gray-800/30 to-gray-900/30 backdrop-blur-sm rounded-xl p-4 hover:from-purple-900/20 hover:to-blue-900/20 transition-colors duration-300 cursor-pointer border border-gray-700/30 hover:border-blue-500/30 shadow-lg shadow-black/10 block"
                       >
                         <h4 className="text-lg font-semibold text-white mb-2">{project.name}</h4>
                         <p className="text-gray-400 text-sm mb-3">{project.description}</p>
@@ -99,7 +102,7 @@ export function Journey() {
                             </span>
                           ))}
                         </div>
-                      </div>
+                      </a>
                     </Parallax>
                   ))}
                 </div>
@@ -132,8 +135,8 @@ export function Journey() {
               className="glass rounded-3xl p-6 border border-gray-700/50 hover:border-blue-500/50 transition-colors relative overflow-hidden shadow-lg shadow-black/20"
             >
               <Parallax speed={0.15} direction="right">
-                <div 
-                  className="flex items-center justify-between cursor-pointer group"
+                <button 
+                  className="flex items-center justify-between cursor-pointer group w-full"
                   onClick={() => setIsStackOpen(!isStackOpen)}
                 >
                   <div className="flex items-center gap-2">
@@ -155,7 +158,7 @@ export function Journey() {
                   >
                     <ChevronDown className="h-5 w-5 text-gray-400" />
                   </motion.div>
-                </div>
+                </button>
 
                 <motion.div
                   initial={false}
