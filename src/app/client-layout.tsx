@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react"
 import LoadingScreen from "@/components/LoadingScreen"
 import { usePathname, useRouter } from 'next/navigation'
-import { formatPath, getBasePath, getCleanPath, isGitHubPages } from "@/utils/navigation"
 
 export default function ClientLayout({
   children,
@@ -11,12 +10,10 @@ export default function ClientLayout({
   children: React.ReactNode
 }) {
   const [isLoading, setIsLoading] = useState(true);
-  const [activeRoute, setActiveRoute] = useState('/');
   const pathname = usePathname();
   const router = useRouter();
   const isProduction = process.env.NODE_ENV === 'production';
 
-  // Loading screen effect
   useEffect(() => {
     try {
       // Disable loading animation completely on GitHub Pages
@@ -68,57 +65,6 @@ export default function ClientLayout({
     }
   }, []);
 
-  // GitHub Pages routing handler
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    
-    const hostname = window.location.hostname;
-    const isGitHubPages = hostname.includes('github.io');
-    
-    if (!isGitHubPages) return;
-    
-    // Hash-based routing for GitHub Pages
-    const handleHashChange = () => {
-      const hash = window.location.hash;
-      
-      // Extract route from hash (remove the # symbol)
-      const route = hash ? hash.substring(1) || '/' : '/';
-      
-      // Update active route state
-      setActiveRoute(route);
-      
-      // Scroll to top on route change
-      window.scrollTo(0, 0);
-    };
-    
-    // Initial hash check
-    handleHashChange();
-    
-    // Listen for hash changes
-    window.addEventListener('hashchange', handleHashChange);
-    
-    // Check for direct navigation to a route (no hash)
-    if (!window.location.hash) {
-      const path = window.location.pathname;
-      const basePath = '/my-portfolio';
-      
-      // If path contains a valid route segment after the base path, redirect to hash-based route
-      if (path.startsWith(basePath)) {
-        const routePath = path.substring(basePath.length);
-        const validRoutes = ['/about', '/projects', '/contact'];
-        
-        if (validRoutes.includes(routePath)) {
-          // Use hash-based routing
-          window.location.replace(`${basePath}/#${routePath}`);
-        }
-      }
-    }
-    
-    return () => {
-      window.removeEventListener('hashchange', handleHashChange);
-    };
-  }, []);
-
   // Handle navigation loading state
   useEffect(() => {
     const handleStart = () => setIsLoading(true);
@@ -133,21 +79,10 @@ export default function ClientLayout({
     };
   }, []);
 
-  // Render appropriate content based on hash route for GitHub Pages
-  const renderContent = () => {
-    // If not GitHub Pages, render children directly
-    if (typeof window === 'undefined' || !window.location.hostname.includes('github.io')) {
-      return children;
-    }
-    
-    // For GitHub Pages, use hash-based routing
-    return children;
-  };
-
   return (
     <div className="bg-black text-white">
       {!isLoading ? (
-        renderContent()
+        children
       ) : (
         <>
           <LoadingScreen 

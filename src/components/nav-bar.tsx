@@ -26,19 +26,7 @@ export function NavBar() {
   // Check if we're on GitHub Pages
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const isGHP = window.location.hostname.includes('github.io');
-      setIsGitHubPages(isGHP);
-      
-      // Set up hash change listener for GitHub Pages
-      if (isGHP) {
-        const handleHashChange = () => {
-          // Force re-render on hash change
-          setIsScrolled(window.scrollY > 10);
-        };
-        
-        window.addEventListener('hashchange', handleHashChange);
-        return () => window.removeEventListener('hashchange', handleHashChange);
-      }
+      setIsGitHubPages(window.location.hostname.includes('github.io'))
     }
   }, [])
 
@@ -58,35 +46,17 @@ export function NavBar() {
     }
   }, [isOpen])
   
-  // Get the active path (accounting for hash-based routing on GitHub Pages)
-  const getActivePath = () => {
-    if (isGitHubPages) {
-      // On GitHub Pages, use hash for routing
-      const hash = window.location.hash;
-      if (!hash || hash === '#/') return '/';
-      return hash.replace('#', '');
-    }
-    
-    // On normal Next.js, use pathname
-    return pathname;
-  };
-  
   // Handle navigation
   const handleNavigation = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
-    e.preventDefault();
+    e.preventDefault()
     
     // Close mobile menu if open
     if (isOpen) {
-      setIsOpen(false);
+      setIsOpen(false)
     }
     
-    if (isGitHubPages) {
-      // On GitHub Pages, use hash-based routing
-      window.location.hash = path === '/' ? '' : path;
-    } else {
-      // Use Next.js router for client-side navigation
-      router.push(path);
-    }
+    // Use router for client-side navigation
+    router.push(path)
   }
 
   return (
@@ -102,7 +72,7 @@ export function NavBar() {
         <div className="flex justify-between items-center py-4 md:justify-start md:space-x-10">
           <div className="flex justify-start lg:w-0 lg:flex-1">
             <Link 
-              href={isGitHubPages ? '#' : '/'}
+              href="/"
               className="text-2xl font-bold text-white"
               onClick={(e) => handleNavigation(e, '/')}
             >
@@ -128,14 +98,12 @@ export function NavBar() {
           <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
             <div className="ml-10 flex items-baseline space-x-4">
               {navItems.map((item) => {
-                // Get current active path for highlighting
-                const activePath = getActivePath();
-                const isActive = activePath === item.path;
+                const isActive = pathname === item.path;
                 
                 return (
                   <Link
                     key={item.name}
-                    href={isGitHubPages ? `#${item.path}` : item.path}
+                    href={item.path}
                     className={`px-3 py-2 rounded-md text-sm font-medium transition-colors hover:text-white ${
                       isActive
                         ? 'text-white bg-blue-500/20 hover:bg-blue-500/30'
@@ -170,14 +138,12 @@ export function NavBar() {
       >
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
           {navItems.map((item) => {
-            // Get current active path for highlighting
-            const activePath = getActivePath();
-            const isActive = activePath === item.path;
+            const isActive = pathname === item.path;
             
             return (
               <Link
                 key={item.name}
-                href={isGitHubPages ? `#${item.path}` : item.path}
+                href={item.path}
                 className={`block px-3 py-2 rounded-md text-base font-medium ${
                   isActive
                     ? 'text-white bg-blue-500/20'

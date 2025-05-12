@@ -2,146 +2,31 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Page Not Found</title>
+  <title>Redirecting to index.html</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    body {
-      background-color: #000;
-      color: #fff;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      text-align: center;
-      padding: 50px 16px;
-      margin: 0;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-    h1 {
-      font-size: 4rem;
-      margin-bottom: 16px;
-    }
-    p {
-      font-size: 1.25rem;
-      margin-bottom: 24px;
-      color: #aaa;
-    }
-    .loader {
-      display: inline-block;
-      position: relative;
-      width: 80px;
-      height: 80px;
-      margin-bottom: 20px;
-    }
-    .loader div {
-      position: absolute;
-      top: 33px;
-      width: 13px;
-      height: 13px;
-      border-radius: 50%;
-      background: #4299e1;
-      animation-timing-function: cubic-bezier(0, 1, 1, 0);
-    }
-    .loader div:nth-child(1) {
-      left: 8px;
-      animation: loader1 0.6s infinite;
-    }
-    .loader div:nth-child(2) {
-      left: 8px;
-      animation: loader2 0.6s infinite;
-    }
-    .loader div:nth-child(3) {
-      left: 32px;
-      animation: loader2 0.6s infinite;
-    }
-    .loader div:nth-child(4) {
-      left: 56px;
-      animation: loader3 0.6s infinite;
-    }
-    @keyframes loader1 {
-      0% { transform: scale(0); }
-      100% { transform: scale(1); }
-    }
-    @keyframes loader3 {
-      0% { transform: scale(1); }
-      100% { transform: scale(0); }
-    }
-    @keyframes loader2 {
-      0% { transform: translate(0, 0); }
-      100% { transform: translate(24px, 0); }
-    }
-    .button {
-      display: inline-block;
-      padding: 10px 20px;
-      background-color: #4299e1;
-      color: white;
-      border-radius: 4px;
-      margin: 8px;
-      font-weight: 500;
-      text-decoration: none;
-    }
-    .button.outline {
-      background-color: transparent;
-      border: 1px solid #4299e1;
-    }
-  </style>
   <script>
-    // GitHub Pages SPA redirect script
-    (function() {
-      // Base path for GitHub Pages
-      const basePath = '/my-portfolio';
-      
-      // Parse the URL
-      let path = window.location.pathname;
-      
-      // Remove basePath to get the clean path
-      if (path.startsWith(basePath)) {
-        path = path.substring(basePath.length) || '/';
-      }
-      
-      // If this is a 404 page, redirect to the home page with hash-based routing
-      if (path === '/404.html' || path === '/404') {
-        // Extract the requested path from the URL's search params if available
-        const urlParams = new URLSearchParams(window.location.search);
-        const requestedPath = urlParams.get('path');
-        
-        if (requestedPath) {
-          // Check if it's one of our main routes
-          const mainRoutes = ['/about', '/projects', '/contact'];
-          
-          if (mainRoutes.includes(requestedPath)) {
-            // Redirect to the home page with the hash-based route
-            window.location.replace(`${basePath}/#${requestedPath}`);
-            return;
-          }
-        }
-        
-        // If no path param or not a main route, redirect to the home page
-        window.location.replace(basePath + '/');
-      }
-      
-      // Special handling for direct access to routes
-      const specialRoutes = ['/about/', '/projects/', '/contact/'];
-      
-      // If this is one of our special routes, redirect to hash-based routing
-      if (specialRoutes.some(route => path === route || path === route.slice(0, -1))) {
-        const cleanRoute = path.endsWith('/') ? path.slice(0, -1) : path;
-        window.location.replace(`${basePath}/#${cleanRoute}`);
-      }
-    })();
+    // Single Page Apps for GitHub Pages
+    // MIT License
+    // https://github.com/rafgraph/spa-github-pages
+    // This script takes the current URL and converts the path and query
+    // string into just a query string, and then redirects the browser
+    // to the new URL with only a query string and hash fragment.
+
+    // If you're creating a Project Pages site and NOT using a custom domain,
+    // then set pathSegmentsToKeep to 1 (enterprise users may need to set it to > 1).
+    var pathSegmentsToKeep = 1;
+
+    var l = window.location;
+    l.replace(
+      l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+      l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
+      l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
+      (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+      l.hash
+    );
   </script>
 </head>
 <body>
-  <div class="loader">
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-  </div>
-  <h1>404</h1>
-  <p>Redirecting to home page...</p>
-  <p>If you're not redirected automatically, please click the button below</p>
-  <a href="/my-portfolio/" class="button">Return Home</a>
+  <h1>Redirecting...</h1>
 </body>
 </html> 

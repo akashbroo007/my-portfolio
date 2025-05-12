@@ -4,6 +4,28 @@
   <meta charset="utf-8">
   <title>Akash Prabhakaran - Portfolio</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script type="text/javascript">
+    // Single Page Apps for GitHub Pages
+    // MIT License
+    // https://github.com/rafgraph/spa-github-pages
+    // This script checks to see if a redirect is present in the query string,
+    // converts it back into the correct url and adds it to the
+    // browser's history using window.history.replaceState(...),
+    // which won't cause the browser to attempt to load the new url.
+    // When the single page app is loaded further down in this file,
+    // the correct url will be waiting in the browser's history for
+    // the single page app to route accordingly.
+    (function(l) {
+      if (l.search[1] === '/' ) {
+        var decoded = l.search.slice(1).split('&').map(function(s) { 
+          return s.replace(/~and~/g, '&')
+        }).join('?');
+        window.history.replaceState(null, null,
+            l.pathname.slice(0, -1) + decoded + l.hash
+        );
+      }
+    }(window.location))
+  </script>
   <style>
     body {
       background-color: #000;
@@ -79,24 +101,6 @@
       100% { transform: translate(24px, 0); }
     }
   </style>
-  <script src="/_spa-redirect.js"></script>
-  <script>
-    // Automatically redirect to the correct path
-    (function() {
-      const hostname = window.location.hostname;
-      
-      // Only run the redirect if we're on GitHub Pages
-      if (hostname.includes('github.io')) {
-        if (window.location.pathname === '/') {
-          // We're at the root of the GitHub Pages site
-          window.location.replace('/my-portfolio/');
-        } else if (window.location.pathname === '/my-portfolio/index.html') {
-          // Remove the index.html part for cleaner URLs
-          window.location.replace('/my-portfolio/');
-        }
-      }
-    })();
-  </script>
 </head>
 <body>
   <div class="loader">
@@ -107,6 +111,6 @@
   </div>
   <h1>Akash Prabhakaran</h1>
   <p>Full Stack Developer</p>
-  <p>Redirecting to portfolio...</p>
+  <p>Loading portfolio...</p>
 </body>
 </html> 
