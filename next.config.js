@@ -27,6 +27,16 @@ const nextConfig = {
   },
   // Make sure routes are properly generated
   trailingSlash: true,
+  // Exclude problematic routes from export
+  exportPathMap: async function() {
+    return {
+      '/': { page: '/' },
+      '/about': { page: '/about' },
+      '/projects': { page: '/projects' },
+      '/contact': { page: '/contact' },
+      '/404': { page: '/404' },
+    };
+  },
 }
 
 module.exports = nextConfig
