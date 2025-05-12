@@ -5,35 +5,29 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { formatPath, getCleanPath, isGitHubPages } from '@/utils/navigation';
 
 export default function NotFound() {
   const router = useRouter();
-  const [onGitHubPages, setOnGitHubPages] = useState(false);
+  const [isGitHubPages, setIsGitHubPages] = useState(false);
+  const basePath = process.env.NODE_ENV === 'production' ? '/my-portfolio' : '';
   
   useEffect(() => {
     // Check if we're on GitHub Pages
     if (typeof window !== 'undefined') {
-      setOnGitHubPages(isGitHubPages());
+      setIsGitHubPages(window.location.hostname.includes('github.io'));
     }
   }, []);
   
-  // Handle navigation to prevent navigation issues
+  // Handle navigation with hash-based routing on GitHub Pages
   const handleNavigation = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
-    if (onGitHubPages) {
-      e.preventDefault();
-      
-      try {
-        // Get clean path for router
-        const cleanPath = getCleanPath(path);
-        
-        // Use Next.js router for client-side navigation
-        router.push(cleanPath);
-      } catch (error) {
-        console.error('Navigation error:', error);
-        // Fallback to traditional navigation
-        window.location.href = formatPath(path);
-      }
+    e.preventDefault();
+    
+    if (isGitHubPages) {
+      // For GitHub Pages, use hash-based routing
+      window.location.hash = path === '/' ? '' : path;
+    } else {
+      // Use Next.js router for client-side navigation
+      router.push(path);
     }
   };
   
@@ -49,7 +43,7 @@ export default function NotFound() {
         <h2 className="text-2xl font-medium mb-8">This page could not be found.</h2>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link 
-            href={formatPath('/')} 
+            href={isGitHubPages ? '#' : '/'} 
             onClick={(e) => handleNavigation(e, '/')}
           >
             <Button>
@@ -57,8 +51,8 @@ export default function NotFound() {
             </Button>
           </Link>
           <Link 
-            href={formatPath('/projects/')} 
-            onClick={(e) => handleNavigation(e, '/projects/')}
+            href={isGitHubPages ? '#/projects' : '/projects'} 
+            onClick={(e) => handleNavigation(e, '/projects')}
           >
             <Button variant="outline">
               View Projects

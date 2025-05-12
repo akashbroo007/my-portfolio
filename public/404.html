@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Redirecting...</title>
+  <title>Page Not Found</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body {
@@ -71,62 +71,63 @@
       0% { transform: translate(0, 0); }
       100% { transform: translate(24px, 0); }
     }
+    .button {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #4299e1;
+      color: white;
+      border-radius: 4px;
+      margin: 8px;
+      font-weight: 500;
+      text-decoration: none;
+    }
+    .button.outline {
+      background-color: transparent;
+      border: 1px solid #4299e1;
+    }
   </style>
   <script>
-    // Single Page Apps for GitHub Pages
-    // MIT License
-    // Modified version from https://github.com/rafgraph/spa-github-pages
+    // GitHub Pages SPA redirect script
     (function() {
-      // This is a fix for GitHub Pages SPA routing
-
-      // Settings
-      const pathSegmentsToKeep = 1; // Keep /my-portfolio/ segment
-      const validRootPaths = ['about', 'projects', 'contact']; // Valid direct paths under the root
+      // Base path for GitHub Pages
+      const basePath = '/my-portfolio';
       
-      // Get current location
-      const location = window.location;
-      const baseHref = '/my-portfolio/';
+      // Parse the URL
+      let path = window.location.pathname;
       
-      // Initial URL checks
-      const isNormalFile = location.pathname.endsWith('.html');
-      const is404Page = location.pathname.includes('/404') || location.pathname.includes('/404.html');
-      const isRoot = location.pathname === '/' || location.pathname === baseHref;
-      
-      // 1. If we're on the 404 page itself, redirect to home
-      if (is404Page) {
-        redirectToHome();
-        return;
+      // Remove basePath to get the clean path
+      if (path.startsWith(basePath)) {
+        path = path.substring(basePath.length) || '/';
       }
       
-      // 2. If we're at the root, no need to redirect
-      if (isRoot) {
-        return;
-      }
-
-      // 3. If this is a normal file request (not an SPA route), don't do anything special
-      if (isNormalFile && !is404Page) {
-        return;
-      }
-      
-      // 4. Special handling for direct route attempts
-      const pathname = location.pathname;
-      const directPath = pathname.replace(baseHref, '').split('/')[0]; // Get first segment after basePath
-      
-      if (validRootPaths.includes(directPath)) {
-        redirectToPath(directPath);
-        return;
-      }
-      
-      // 5. Default to home if none of the above
-      redirectToHome();
-      
-      // Helper functions
-      function redirectToHome() {
-        window.location.replace(baseHref);
+      // If this is a 404 page, redirect to the home page with hash-based routing
+      if (path === '/404.html' || path === '/404') {
+        // Extract the requested path from the URL's search params if available
+        const urlParams = new URLSearchParams(window.location.search);
+        const requestedPath = urlParams.get('path');
+        
+        if (requestedPath) {
+          // Check if it's one of our main routes
+          const mainRoutes = ['/about', '/projects', '/contact'];
+          
+          if (mainRoutes.includes(requestedPath)) {
+            // Redirect to the home page with the hash-based route
+            window.location.replace(`${basePath}/#${requestedPath}`);
+            return;
+          }
+        }
+        
+        // If no path param or not a main route, redirect to the home page
+        window.location.replace(basePath + '/');
       }
       
-      function redirectToPath(path) {
-        window.location.replace(baseHref + path + '/');
+      // Special handling for direct access to routes
+      const specialRoutes = ['/about/', '/projects/', '/contact/'];
+      
+      // If this is one of our special routes, redirect to hash-based routing
+      if (specialRoutes.some(route => path === route || path === route.slice(0, -1))) {
+        const cleanRoute = path.endsWith('/') ? path.slice(0, -1) : path;
+        window.location.replace(`${basePath}/#${cleanRoute}`);
       }
     })();
   </script>
@@ -138,7 +139,9 @@
     <div></div>
     <div></div>
   </div>
-  <h1>Redirecting...</h1>
-  <p>Please wait while we take you to the correct page</p>
+  <h1>404</h1>
+  <p>Redirecting to home page...</p>
+  <p>If you're not redirected automatically, please click the button below</p>
+  <a href="/my-portfolio/" class="button">Return Home</a>
 </body>
 </html> 

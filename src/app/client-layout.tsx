@@ -11,20 +11,18 @@ export default function ClientLayout({
   children: React.ReactNode
 }) {
   const [isLoading, setIsLoading] = useState(true);
+  const [activeRoute, setActiveRoute] = useState('/');
   const pathname = usePathname();
   const router = useRouter();
-  const [onGitHubPages, setOnGitHubPages] = useState(false);
-  const basePath = getBasePath();
+  const isProduction = process.env.NODE_ENV === 'production';
 
   // Loading screen effect
   useEffect(() => {
     try {
-      // Check if we're on GitHub Pages
-      const isOnGitHubPages = typeof window !== 'undefined' && isGitHubPages();
-      setOnGitHubPages(isOnGitHubPages);
-      
       // Disable loading animation completely on GitHub Pages
-      if (isOnGitHubPages) {
+      const isGitHubPages = typeof window !== 'undefined' && window.location.hostname.includes('github.io');
+      
+      if (isGitHubPages) {
         console.log('Skipping loading animation for GitHub Pages');
         setIsLoading(false);
         return;
@@ -70,102 +68,61 @@ export default function ClientLayout({
     }
   }, []);
 
-  // GitHub Pages base path handling - improved
+  // GitHub Pages routing handler
   useEffect(() => {
-    // Only run on GitHub Pages
-    if (typeof window !== 'undefined' && isGitHubPages()) {
-      const handleAllNavigation = () => {
-        // Fix any relative paths that might not include the base path
-        const links = document.querySelectorAll('a[href^="/"]');
-        links.forEach(link => {
-          const href = link.getAttribute('href');
-          if (href && !href.startsWith(basePath) && href !== '/') {
-            link.setAttribute('href', formatPath(href));
-          }
-        });
-        
-        // Fix any image sources that might not include the base path
-        const images = document.querySelectorAll('img[src^="/"]');
-        images.forEach(img => {
-          const src = img.getAttribute('src');
-          if (src && !src.startsWith(basePath)) {
-            img.setAttribute('src', formatPath(src));
-          }
-        });
-      };
+    if (typeof window === 'undefined') return;
+    
+    const hostname = window.location.hostname;
+    const isGitHubPages = hostname.includes('github.io');
+    
+    if (!isGitHubPages) return;
+    
+    // Hash-based routing for GitHub Pages
+    const handleHashChange = () => {
+      const hash = window.location.hash;
       
-      // Run once on initial load
-      handleAllNavigation();
+      // Extract route from hash (remove the # symbol)
+      const route = hash ? hash.substring(1) || '/' : '/';
       
-      // Also run after any route change detected
-      const observer = new MutationObserver(handleAllNavigation);
-      observer.observe(document.body, { 
-        childList: true, 
-        subtree: true 
-      });
+      // Update active route state
+      setActiveRoute(route);
       
-      // Set up a global click interceptor for all navigation links
-      const handleLinkClick = (e: MouseEvent) => {
-        const target = e.target as HTMLElement;
-        const link = target.closest('a');
+      // Scroll to top on route change
+      window.scrollTo(0, 0);
+    };
+    
+    // Initial hash check
+    handleHashChange();
+    
+    // Listen for hash changes
+    window.addEventListener('hashchange', handleHashChange);
+    
+    // Check for direct navigation to a route (no hash)
+    if (!window.location.hash) {
+      const path = window.location.pathname;
+      const basePath = '/my-portfolio';
+      
+      // If path contains a valid route segment after the base path, redirect to hash-based route
+      if (path.startsWith(basePath)) {
+        const routePath = path.substring(basePath.length);
+        const validRoutes = ['/about', '/projects', '/contact'];
         
-        if (!link) return; // Not a link click
-        
-        const href = link.getAttribute('href');
-        if (!href) return; // No href attribute
-        
-        // Ignore external links, anchors, and links with targets
-        if (
-          href.includes('://') || 
-          href.startsWith('#') || 
-          link.getAttribute('target') || 
-          link.getAttribute('rel') === 'noopener noreferrer'
-        ) {
-          return;
+        if (validRoutes.includes(routePath)) {
+          // Use hash-based routing
+          window.location.replace(`${basePath}/#${routePath}`);
         }
-        
-        // Prevent default navigation for internal links
-        if (href.startsWith('/') || href.startsWith(basePath)) {
-          e.preventDefault();
-          
-          try {
-            // Get clean path for router
-            const cleanPath = getCleanPath(href);
-            
-            // Use router for client-side navigation
-            router.push(cleanPath);
-          } catch (error) {
-            console.error('Navigation error:', error);
-            // Fallback to traditional navigation
-            window.location.href = href;
-          }
-        }
-      };
-      
-      // Add the global click handler
-      document.addEventListener('click', handleLinkClick);
-      
-      return () => {
-        observer.disconnect();
-        document.removeEventListener('click', handleLinkClick);
-      };
+      }
     }
-  }, [pathname, router, basePath]);
+    
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange);
+    };
+  }, []);
 
   // Handle navigation loading state
   useEffect(() => {
     const handleStart = () => setIsLoading(true);
-    const handleComplete = () => {
-      // Use a small delay to prevent flicker
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 100);
-    };
-    
-    // For debugging on GitHub Pages
-    if (onGitHubPages) {
-      console.log('Current pathname:', pathname);
-    }
+    const handleComplete = () => setIsLoading(false);
     
     window.addEventListener('beforeunload', handleStart);
     window.addEventListener('load', handleComplete);
@@ -174,12 +131,23 @@ export default function ClientLayout({
       window.removeEventListener('beforeunload', handleStart);
       window.removeEventListener('load', handleComplete);
     };
-  }, [pathname, onGitHubPages]);
+  }, []);
+
+  // Render appropriate content based on hash route for GitHub Pages
+  const renderContent = () => {
+    // If not GitHub Pages, render children directly
+    if (typeof window === 'undefined' || !window.location.hostname.includes('github.io')) {
+      return children;
+    }
+    
+    // For GitHub Pages, use hash-based routing
+    return children;
+  };
 
   return (
     <div className="bg-black text-white">
       {!isLoading ? (
-        children
+        renderContent()
       ) : (
         <>
           <LoadingScreen 

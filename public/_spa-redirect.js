@@ -1,54 +1,41 @@
 // Single Page Apps for GitHub Pages
 // MIT License - Based on https://github.com/rafgraph/spa-github-pages
-// This script handles SPA navigation for GitHub Pages
+// This script checks if we need to redirect to the index.html for SPA routing
 
-(function(l, basePath) {
-  const route = {};
-
-  // First, detect if we need to redirect
-  const needsRedirect = (l.hostname.includes('github.io'));
+(function() {
+  // Only run this on GitHub Pages
+  if (!window.location.hostname.includes('github.io')) return;
   
-  if (!needsRedirect) return; // Not on GitHub Pages, no need for special handling
+  // Check if this is a direct page load (not via navigation within the app)
+  const isDirectPageLoad = !window.location.href.includes('/#/');
   
-  // Valid routes in the application
-  const validRoutes = ['', 'about', 'projects', 'contact'];
-  
-  // Function to redirect to a specific path
-  function redirectToPath(path) {
-    const redirectPath = basePath + (path ? '/' + path + '/' : '/');
-    window.location.replace(redirectPath);
+  if (isDirectPageLoad) {
+    // Base path for GitHub Pages
+    const basePath = '/my-portfolio';
+    
+    // Get the path after the base path
+    let path = window.location.pathname;
+    
+    // Remove base path to get the route
+    if (path.startsWith(basePath)) {
+      path = path.substring(basePath.length) || '/';
+    }
+    
+    // Don't redirect from the root path or if it's a static asset
+    if (path === '/' || path === '/index.html') return;
+    
+    // Don't redirect from 404.html (we're handling that separately)
+    if (path.includes('/404') || path.includes('/404.html')) return;
+    
+    // Special handling for main navigation routes
+    const mainRoutes = ['/about/', '/projects/', '/contact/'];
+    
+    // Check if this is one of our main routes
+    if (mainRoutes.some(route => path === route || path === route.slice(0, -1))) {
+      // Redirect to the home page with the route in the hash
+      const targetRoute = path.endsWith('/') ? path.slice(0, -1) : path;
+      const newPath = `${basePath}/#${targetRoute}`;
+      window.location.replace(newPath);
+    }
   }
-  
-  // Parse the URL
-  const fullPath = l.pathname.replace(basePath, '') || '/';
-  
-  // Extract the route path (just the first segment)
-  let routePath = fullPath.split('/').filter(Boolean)[0] || '';
-  
-  // Handle special case where fullPath is exactly "/" (empty path)
-  if (fullPath === '/') {
-    // We're at root, no need to redirect
-    return;
-  }
-  
-  // If this is not a main route (or is some nested path), we need to check if it's valid
-  if (!validRoutes.includes(routePath)) {
-    // If not a valid route, redirect to home
-    redirectToPath('');
-    return;
-  }
-  
-  // If we're on a direct route path but it doesn't end with a slash, add it
-  if (validRoutes.includes(routePath) && !l.pathname.endsWith('/')) {
-    redirectToPath(routePath);
-    return;
-  }
-  
-  // Handle 404 pages
-  if (l.pathname.includes('/404') || l.pathname.includes('/404.html')) {
-    redirectToPath('');
-    return;
-  }
-  
-  // If nothing matched, we're probably on a valid path already
-})((window.location || document.location), '/my-portfolio'); 
+})(); 

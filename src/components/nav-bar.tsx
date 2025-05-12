@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 import { usePathname, useRouter } from 'next/navigation'
-import { formatPath, getBasePath, getCleanPath, isGitHubPages } from '@/utils/navigation'
 
 export function NavBar() {
   const [isOpen, setIsOpen] = useState(false)
@@ -14,22 +13,32 @@ export function NavBar() {
   const router = useRouter()
   
   // Detect if we're on GitHub Pages
-  const [onGitHubPages, setOnGitHubPages] = useState(false)
-  
-  // Get the basePath dynamically
-  const basePath = getBasePath();
+  const [isGitHubPages, setIsGitHubPages] = useState(false)
+  const basePath = process.env.NODE_ENV === 'production' ? '/my-portfolio' : '';
 
   const navItems = [
     { name: 'Home', path: '/' },
-    { name: 'About', path: '/about/' },
-    { name: 'Projects', path: '/projects/' },
-    { name: 'Contact', path: '/contact/' }
+    { name: 'About', path: '/about' },
+    { name: 'Projects', path: '/projects' },
+    { name: 'Contact', path: '/contact' }
   ]
   
   // Check if we're on GitHub Pages
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      setOnGitHubPages(isGitHubPages());
+      const isGHP = window.location.hostname.includes('github.io');
+      setIsGitHubPages(isGHP);
+      
+      // Set up hash change listener for GitHub Pages
+      if (isGHP) {
+        const handleHashChange = () => {
+          // Force re-render on hash change
+          setIsScrolled(window.scrollY > 10);
+        };
+        
+        window.addEventListener('hashchange', handleHashChange);
+        return () => window.removeEventListener('hashchange', handleHashChange);
+      }
     }
   }, [])
 
@@ -49,28 +58,34 @@ export function NavBar() {
     }
   }, [isOpen])
   
-  // Handle navigation - improved version
+  // Get the active path (accounting for hash-based routing on GitHub Pages)
+  const getActivePath = () => {
+    if (isGitHubPages) {
+      // On GitHub Pages, use hash for routing
+      const hash = window.location.hash;
+      if (!hash || hash === '#/') return '/';
+      return hash.replace('#', '');
+    }
+    
+    // On normal Next.js, use pathname
+    return pathname;
+  };
+  
+  // Handle navigation
   const handleNavigation = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
-    // Always use client-side navigation on GitHub Pages
-    if (onGitHubPages) {
-      e.preventDefault();
-      
-      // Close mobile menu if open
-      if (isOpen) {
-        setIsOpen(false);
-      }
-      
-      try {
-        // Clean path for Next.js router
-        const cleanPath = getCleanPath(path);
-        
-        // Use the router for client-side navigation
-        router.push(cleanPath);
-      } catch (error) {
-        console.error('Navigation error:', error);
-        // Fallback to traditional navigation if router fails
-        window.location.href = formatPath(path);
-      }
+    e.preventDefault();
+    
+    // Close mobile menu if open
+    if (isOpen) {
+      setIsOpen(false);
+    }
+    
+    if (isGitHubPages) {
+      // On GitHub Pages, use hash-based routing
+      window.location.hash = path === '/' ? '' : path;
+    } else {
+      // Use Next.js router for client-side navigation
+      router.push(path);
     }
   }
 
@@ -87,7 +102,7 @@ export function NavBar() {
         <div className="flex justify-between items-center py-4 md:justify-start md:space-x-10">
           <div className="flex justify-start lg:w-0 lg:flex-1">
             <Link 
-              href={formatPath('/')}
+              href={isGitHubPages ? '#' : '/'}
               className="text-2xl font-bold text-white"
               onClick={(e) => handleNavigation(e, '/')}
             >
@@ -112,20 +127,26 @@ export function NavBar() {
           {/* Desktop menu */}
           <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
             <div className="ml-10 flex items-baseline space-x-4">
-              {navItems.map((item) => (
-                <Link
-                  key={item.name}
-                  href={formatPath(item.path)}
-                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors hover:text-white ${
-                    pathname === item.path || pathname === `${basePath}${item.path}`
-                      ? 'text-white bg-blue-500/20 hover:bg-blue-500/30'
-                      : 'text-gray-300 hover:bg-gray-800/50'
-                  }`}
-                  onClick={(e) => handleNavigation(e, item.path)}
-                >
-                  {item.name}
-                </Link>
-              ))}
+              {navItems.map((item) => {
+                // Get current active path for highlighting
+                const activePath = getActivePath();
+                const isActive = activePath === item.path;
+                
+                return (
+                  <Link
+                    key={item.name}
+                    href={isGitHubPages ? `#${item.path}` : item.path}
+                    className={`px-3 py-2 rounded-md text-sm font-medium transition-colors hover:text-white ${
+                      isActive
+                        ? 'text-white bg-blue-500/20 hover:bg-blue-500/30'
+                        : 'text-gray-300 hover:bg-gray-800/50'
+                    }`}
+                    onClick={(e) => handleNavigation(e, item.path)}
+                  >
+                    {item.name}
+                  </Link>
+                );
+              })}
               <a
                 href="https://github.com/akashbroo007"
                 target="_blank"
@@ -148,22 +169,29 @@ export function NavBar() {
         style={{ overflow: 'hidden' }}
       >
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-          {navItems.map((item) => (
-            <Link
-              key={item.name}
-              href={formatPath(item.path)}
-              className={`block px-3 py-2 rounded-md text-base font-medium ${
-                pathname === item.path || pathname === `${basePath}${item.path}`
-                  ? 'text-white bg-blue-500/20'
-                  : 'text-gray-300 hover:bg-gray-800 hover:text-white'
-              }`}
-              onClick={(e) => {
-                handleNavigation(e, item.path);
-              }}
-            >
-              {item.name}
-            </Link>
-          ))}
+          {navItems.map((item) => {
+            // Get current active path for highlighting
+            const activePath = getActivePath();
+            const isActive = activePath === item.path;
+            
+            return (
+              <Link
+                key={item.name}
+                href={isGitHubPages ? `#${item.path}` : item.path}
+                className={`block px-3 py-2 rounded-md text-base font-medium ${
+                  isActive
+                    ? 'text-white bg-blue-500/20'
+                    : 'text-gray-300 hover:bg-gray-800 hover:text-white'
+                }`}
+                onClick={(e) => {
+                  handleNavigation(e, item.path);
+                  setIsOpen(false);
+                }}
+              >
+                {item.name}
+              </Link>
+            );
+          })}
           <a
             href="https://github.com/akashbroo007"
             target="_blank"
