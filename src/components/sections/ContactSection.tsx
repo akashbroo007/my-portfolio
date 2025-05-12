@@ -3,12 +3,16 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Button } from '@/components/ui/button'
-import { ThreeCanvas } from '@/components/3d/ThreeCanvas'
-import { ContactForm3D } from '@/components/3d/ContactForm3D'
+import dynamic from 'next/dynamic'
+
+// Dynamically import the 3D contact form
+const DynamicContactForm = dynamic(
+  () => import('@/components/3d/DynamicContactForm').then(mod => mod.DynamicContactForm),
+  { ssr: false }
+)
 
 export function ContactSection() {
   const [isMounted, setIsMounted] = useState(false)
-  const [isWebGLSupported, setIsWebGLSupported] = useState(true)
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -18,17 +22,9 @@ export function ContactSection() {
   const [submitSuccess, setSubmitSuccess] = useState(false)
   const [submitError, setSubmitError] = useState(false)
   
-  // Check for WebGL support
+  // Check if we're on the client
   useEffect(() => {
     setIsMounted(true)
-    try {
-      const canvas = document.createElement('canvas')
-      const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl')
-      setIsWebGLSupported(!!gl)
-    } catch (e) {
-      setIsWebGLSupported(false)
-      console.error('WebGL not supported')
-    }
   }, [])
   
   const handleChange = (e) => {
@@ -167,33 +163,7 @@ export function ContactSection() {
             viewport={{ once: true }}
             className="h-[400px] lg:h-[500px] relative rounded-lg overflow-hidden bg-gradient-to-br from-blue-900/10 to-black/80 backdrop-blur-sm border border-gray-800"
           >
-            {isMounted && isWebGLSupported ? (
-              <ThreeCanvas
-                camera={{ position: [0, 0, 5], fov: 45 }}
-                controls
-              >
-                <ContactForm3D
-                  position={[0, 0, 0]}
-                  rotation={[0, -0.2, 0]}
-                />
-                <ambientLight intensity={0.5} />
-                <spotLight
-                  position={[10, 5, 10]}
-                  angle={0.15}
-                  penumbra={1}
-                  intensity={0.8}
-                />
-                <pointLight position={[-10, -10, -10]} intensity={0.2} />
-              </ThreeCanvas>
-            ) : (
-              <div className="flex items-center justify-center h-full">
-                <div className="text-center p-8">
-                  <div className="text-blue-500 text-6xl mb-4">✉️</div>
-                  <h3 className="text-2xl font-bold mb-2">Let&apos;s Connect</h3>
-                  <p className="text-gray-400">I&apos;m excited to hear about your project and see how I can help bring your vision to life.</p>
-                </div>
-              </div>
-            )}
+            {isMounted && <DynamicContactForm />}
           </motion.div>
         </div>
         

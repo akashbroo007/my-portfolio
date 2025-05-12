@@ -2,8 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { ThreeCanvas } from '@/components/3d/ThreeCanvas'
-import { SkillCube } from '@/components/3d/SkillCube'
+import dynamic from 'next/dynamic'
 
 // Skill data with titles and images
 const skills = [
@@ -72,6 +71,12 @@ const skills = [
   }
 ]
 
+// Dynamically import the 3D skills component
+const DynamicSkillsCubes = dynamic(
+  () => import('@/components/3d/DynamicSkillsCubes').then(mod => mod.DynamicSkillsCubes),
+  { ssr: false }
+)
+
 // Fallback skill items for non-WebGL browsers
 const SkillItem = ({ skill }) => (
   <div className="bg-gray-800/50 rounded-lg p-5 text-center hover:bg-gray-700/50 transition-colors">
@@ -84,19 +89,10 @@ const SkillItem = ({ skill }) => (
 
 export function SkillsSection() {
   const [isMounted, setIsMounted] = useState(false)
-  const [isWebGLSupported, setIsWebGLSupported] = useState(true)
   
-  // Check for WebGL support
+  // Check if we're on the client
   useEffect(() => {
     setIsMounted(true)
-    try {
-      const canvas = document.createElement('canvas')
-      const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl')
-      setIsWebGLSupported(!!gl)
-    } catch (e) {
-      setIsWebGLSupported(false)
-      console.error('WebGL not supported')
-    }
   }, [])
 
   return (
@@ -117,33 +113,9 @@ export function SkillsSection() {
           </p>
         </motion.div>
         
-        {isMounted && isWebGLSupported ? (
-          // 3D Skill Cubes
+        {isMounted && (
           <div className="h-[500px] relative">
-            <ThreeCanvas 
-              camera={{ position: [0, 0, 5], fov: 60 }}
-              controls
-            >
-              {skills.map((skill, index) => (
-                <motion.group
-                  key={index}
-                  initial={{ scale: 0, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ delay: skill.delay, duration: 0.5 }}
-                >
-                  <SkillCube
-                    position={skill.position}
-                    iconUrls={[skill.icon, skill.icon, skill.icon, skill.icon, skill.icon, skill.icon]}
-                    size={0.7}
-                    rotationSpeed={skill.speed}
-                  />
-                </motion.group>
-              ))}
-              
-              <ambientLight intensity={0.6} />
-              <pointLight position={[10, 10, 10]} intensity={0.8} />
-              <pointLight position={[-10, -10, -10]} intensity={0.4} />
-            </ThreeCanvas>
+            <DynamicSkillsCubes skills={skills} />
             
             {/* Skill titles rendered in HTML */}
             <div className="absolute inset-0 pointer-events-none">
@@ -174,21 +146,6 @@ export function SkillsSection() {
                 })}
               </div>
             </div>
-          </div>
-        ) : (
-          // Fallback grid for browsers without WebGL
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-            {skills.map((skill, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-              >
-                <SkillItem skill={skill} />
-              </motion.div>
-            ))}
           </div>
         )}
       </div>

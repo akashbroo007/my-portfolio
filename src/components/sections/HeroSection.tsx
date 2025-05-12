@@ -5,59 +5,26 @@ import { Button } from '@/components/ui/button'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
-import { ThreeCanvas } from '@/components/3d/ThreeCanvas'
-import { HeroBackground } from '@/components/3d/HeroBackground'
-import { FloatingLogo } from '@/components/3d/FloatingLogo'
+import dynamic from 'next/dynamic'
+
+// Dynamically import the 3D components with no SSR
+const ThreeJSBackground = dynamic(
+  () => import('@/components/3d/DynamicHeroBackground').then(mod => mod.DynamicHeroBackground),
+  { ssr: false }
+)
 
 export function HeroSection() {
   const [isMounted, setIsMounted] = useState(false)
-  const [isWebGLSupported, setIsWebGLSupported] = useState(true)
   
-  // Check for WebGL support
+  // Check if we're on the client
   useEffect(() => {
     setIsMounted(true)
-    try {
-      const canvas = document.createElement('canvas')
-      const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl')
-      setIsWebGLSupported(!!gl)
-    } catch (e) {
-      setIsWebGLSupported(false)
-      console.error('WebGL not supported')
-    }
   }, [])
 
   return (
     <section className="relative min-h-screen w-full flex items-center overflow-hidden">
       {/* 3D Background */}
-      {isMounted && isWebGLSupported && (
-        <div className="absolute inset-0 w-full h-full -z-10">
-          <ThreeCanvas 
-            camera={{ position: [0, 0, 5], fov: 45 }}
-            dpr={[1, 2]}
-          >
-            <HeroBackground 
-              count={1500} 
-              colors={['#0052cc', '#0066ff', '#4299e1', '#90cdf4']} 
-              radius={2.5}
-            />
-            <FloatingLogo 
-              text="AP" 
-              position={[-2, 0.5, 0]} 
-              fontSize={0.6}
-              color="#0066ff"
-              hoverColor="#4299e1"
-            />
-            <FloatingLogo 
-              useCube={true}
-              text="K" 
-              position={[2, -0.5, 0]} 
-              fontSize={0.5}
-              color="#0044aa"
-              hoverColor="#0066ff"
-            />
-          </ThreeCanvas>
-        </div>
-      )}
+      {isMounted && <ThreeJSBackground />}
       
       {/* Hero Content */}
       <div className="container mx-auto px-4 py-24 sm:py-32 relative z-10">

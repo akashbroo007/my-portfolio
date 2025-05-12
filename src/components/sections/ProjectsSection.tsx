@@ -5,8 +5,7 @@ import { motion } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
-import { ThreeCanvas } from '@/components/3d/ThreeCanvas'
-import { ComputerModel } from '@/components/3d/ComputerModel'
+import dynamic from 'next/dynamic'
 
 // Sample project data
 const projects = [
@@ -36,22 +35,19 @@ const projects = [
   }
 ]
 
+// Dynamically import the 3D computer model component
+const DynamicComputerModel = dynamic(
+  () => import('@/components/3d/DynamicComputerModel').then(mod => mod.DynamicComputerModel),
+  { ssr: false }
+)
+
 export function ProjectsSection() {
   const [isMounted, setIsMounted] = useState(false)
-  const [isWebGLSupported, setIsWebGLSupported] = useState(true)
   const [activeProject, setActiveProject] = useState(0)
   
-  // Check for WebGL support
+  // Check if we're on the client
   useEffect(() => {
     setIsMounted(true)
-    try {
-      const canvas = document.createElement('canvas')
-      const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl')
-      setIsWebGLSupported(!!gl)
-    } catch (e) {
-      setIsWebGLSupported(false)
-      console.error('WebGL not supported')
-    }
   }, [])
   
   // Rotate through projects
@@ -93,36 +89,11 @@ export function ProjectsSection() {
             viewport={{ once: true }}
             className="h-[400px] relative rounded-lg overflow-hidden bg-gradient-to-br from-blue-900/30 to-black/80"
           >
-            {isMounted && isWebGLSupported ? (
-              <ThreeCanvas
-                controls
-                camera={{ position: [0, 0, 4], fov: 45 }}
-                shadows
-              >
-                <ComputerModel 
-                  position={[0, -0.5, 0]} 
-                  rotation={[0, Math.PI / 6, 0]}
-                  scale={1.8}
-                  screenshotUrl={projects[activeProject].image || '/images/placeholder-project.jpg'}
-                />
-                <ambientLight intensity={0.4} />
-                <spotLight
-                  position={[5, 5, 5]}
-                  angle={0.15}
-                  penumbra={1}
-                  intensity={0.8}
-                  castShadow
-                />
-                <pointLight position={[-5, -5, -5]} intensity={0.2} />
-              </ThreeCanvas>
-            ) : (
-              <div className="flex items-center justify-center h-full">
-                <img
-                  src={projects[activeProject].image || '/images/placeholder-project.jpg'}
-                  alt={projects[activeProject].title}
-                  className="max-h-full object-cover"
-                />
-              </div>
+            {isMounted && (
+              <DynamicComputerModel
+                activeProject={activeProject}
+                projectImage={projects[activeProject].image}
+              />
             )}
           </motion.div>
           
