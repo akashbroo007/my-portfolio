@@ -1,7 +1,7 @@
 'use client'
 
 import { Canvas } from '@react-three/fiber'
-import { Suspense, useRef } from 'react'
+import { Suspense, useRef, useState, useEffect } from 'react'
 import { OrbitControls, Preload } from '@react-three/drei'
 
 interface ThreeCanvasProps {
@@ -26,16 +26,25 @@ export const ThreeCanvas: React.FC<ThreeCanvasProps> = ({
   controls = false,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const [key, setKey] = useState(0)
+
+  // Force remount the canvas once to ensure proper initialization
+  useEffect(() => {
+    setKey(1)
+  }, [])
 
   return (
     <div className={`relative w-full h-full ${className}`} style={style}>
       <Canvas
+        key={key}
         ref={canvasRef}
         shadows={shadows}
         camera={camera}
         gl={gl}
         dpr={dpr}
         className="w-full h-full outline-none"
+        frameloop="demand"
+        flat
       >
         <Suspense fallback={null}>
           {children}

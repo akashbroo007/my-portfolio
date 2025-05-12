@@ -1,0 +1,16 @@
+This directory contains skill icon images used in the 3D skill cubes.
+
+Required images:
+- react.png
+- next.png
+- typescript.png
+- firebase.png
+- redux.png
+- node.png
+- openai.png
+- websocket.png
+- framer.png
+- tailwind.png
+- three.png
+
+If these images are missing, you'll need to add them here. 

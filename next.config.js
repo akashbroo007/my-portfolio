@@ -14,6 +14,7 @@ const nextConfig = {
     ],
   },
   reactStrictMode: false,
+  transpilePackages: ['three', '@react-three/fiber', '@react-three/drei', 'maath'],
   experimental: {
     forceSwcTransforms: true,
   },

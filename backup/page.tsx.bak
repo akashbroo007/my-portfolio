@@ -1,27 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { HeroSection } from "@/components/sections/HeroSection";
 import { SkillsSection } from "@/components/sections/SkillsSection";
 import { ProjectsSection } from "@/components/sections/ProjectsSection";
 import { ContactSection } from "@/components/sections/ContactSection";
 
 export default function Home() {
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  if (!isClient) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-black text-white">
-        <h1 className="text-4xl font-bold mb-4">Loading Experience...</h1>
-        <p className="text-gray-400">Please wait while we prepare your interactive experience.</p>
-      </div>
-    );
-  }
-
   return (
     <main className="flex flex-col overflow-hidden bg-black">
       {/* Hero Section with 3D Background */}
