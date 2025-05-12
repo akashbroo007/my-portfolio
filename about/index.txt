@@ -1,0 +1,20 @@
+1:"$Sreact.fragment"
+2:I[1236,["741","static/chunks/741-94d5f9211abad7d4.js","874","static/chunks/874-d5dde444059627f9.js","177","static/chunks/app/layout-1486df465a5c750b.js"],"default"]
+3:I[4990,["741","static/chunks/741-94d5f9211abad7d4.js","874","static/chunks/874-d5dde444059627f9.js","177","static/chunks/app/layout-1486df465a5c750b.js"],"NavBar"]
+4:I[7555,[],""]
+5:I[1901,["212","static/chunks/212-88add792cc5c2240.js","874","static/chunks/874-d5dde444059627f9.js","39","static/chunks/app/error-59fb824ccca484ee.js"],"default"]
+6:I[1295,[],""]
+7:I[9543,["741","static/chunks/741-94d5f9211abad7d4.js","212","static/chunks/212-88add792cc5c2240.js","874","static/chunks/874-d5dde444059627f9.js","345","static/chunks/app/not-found-809ce570ed468855.js"],"default"]
+8:I[2214,["741","static/chunks/741-94d5f9211abad7d4.js","874","static/chunks/874-d5dde444059627f9.js","177","static/chunks/app/layout-1486df465a5c750b.js"],"Footer"]
+9:I[4334,["741","static/chunks/741-94d5f9211abad7d4.js","798","static/chunks/798-b166ae97c7fe0dae.js","227","static/chunks/227-0d33e49586ca69af.js","220","static/chunks/app/about/page-7dd8afe59f8c5c8e.js"],"About"]
+a:I[2438,["741","static/chunks/741-94d5f9211abad7d4.js","798","static/chunks/798-b166ae97c7fe0dae.js","227","static/chunks/227-0d33e49586ca69af.js","220","static/chunks/app/about/page-7dd8afe59f8c5c8e.js"],"Journey"]
+b:I[9665,[],"OutletBoundary"]
+e:I[9665,[],"ViewportBoundary"]
+10:I[9665,[],"MetadataBoundary"]
+12:I[8385,["219","static/chunks/app/global-error-908a5d257d8ab0c0.js"],"default"]
+:HL["/my-portfolio/_next/static/css/74ed061c054c4083.css","style"]
+0:{"P":null,"b":"BORIRB6NaYHHpZtFwYJLt","p":"/my-portfolio","c":["","about",""],"i":false,"f":[[["",{"children":["about",{"children":["__PAGE__",{}]}]},"$undefined","$undefined",true],["",["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/my-portfolio/_next/static/css/74ed061c054c4083.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","html",null,{"lang":"en","className":"dark","children":[["$","head",null,{}],["$","body",null,{"className":"bg-black text-white","children":["$","$L2",null,{"children":["$","div",null,{"className":"flex flex-col min-h-screen","children":[["$","$L3",null,{}],["$","main",null,{"className":"flex-1","children":["$","$L4",null,{"parallelRouterKey":"children","error":"$5","errorStyles":[],"errorScripts":[],"template":["$","$L6",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[["$","$L7",null,{}],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}],["$","$L8",null,{}]]}]}]}]]}]]}],{"children":["about",["$","$1","c",{"children":[null,["$","$L4",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L6",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":["__PAGE__",["$","$1","c",{"children":[[["$","$L9",null,{}],["$","$La",null,{}]],"$undefined",null,["$","$Lb",null,{"children":["$Lc","$Ld",null]}]]}],{},null,false]},null,false]},null,false],["$","$1","h",{"children":[null,["$","$1","UPOPulu1gRkJbuRe94gog",{"children":[["$","$Le",null,{"children":"$Lf"}],null]}],["$","$L10",null,{"children":"$L11"}]]}],false]],"m":"$undefined","G":["$12",[]],"s":false,"S":true}
+f:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#000000"}]]
+c:null
+d:null
+11:[["$","title","0",{"children":"Akash Prabhakaran | Full Stack Developer"}],["$","meta","1",{"name":"description","content":"Full Stack Developer Portfolio showcasing projects and technical skills"}]]
