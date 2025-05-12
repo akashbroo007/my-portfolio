@@ -15,10 +15,10 @@ export default function NotFound() {
     // Use Next.js router for client-side navigation
     router.push(path);
   };
-  
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen text-center px-4 bg-black text-white">
-      <motion.div
+      <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -34,7 +34,7 @@ export default function NotFound() {
             <Button>
               Return Home
             </Button>
-          </Link>
+              </Link>
           <Link 
             href="/projects" 
             onClick={(e) => handleNavigation(e, '/projects')}
@@ -42,7 +42,7 @@ export default function NotFound() {
             <Button variant="outline">
               View Projects
             </Button>
-          </Link>
+              </Link>
         </div>
       </motion.div>
     </div>
